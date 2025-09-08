@@ -6,15 +6,25 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct Event_HubApp: App {
     let persistenceController = PersistenceController.shared
-
+    @StateObject private var authManager = AuthenticationManager()
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if authManager.isAuthenticated {
+                ContentView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            } else {
+                AuthenticationView()
+            }
         }
     }
 }
