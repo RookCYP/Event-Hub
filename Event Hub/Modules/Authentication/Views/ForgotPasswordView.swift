@@ -11,7 +11,7 @@ struct ForgotPasswordView: View {
     @ObservedObject var authManager: AuthenticationManager
     let onNavigateBack: () -> Void
     
-    @State private var email = "abc@email.com"
+    @State private var email = "@mail.com"
     @State private var showSuccessMessage = false
     
     var body: some View {

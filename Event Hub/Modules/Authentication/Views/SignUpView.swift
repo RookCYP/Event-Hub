@@ -12,7 +12,7 @@ struct SignUpView: View {
     let onNavigateToSignIn: () -> Void
     
     @State private var fullName = ""
-    @State private var email = "abc@email.com"
+    @State private var email = "@mail.com"
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var showPassword = false
@@ -129,44 +129,42 @@ struct SignUpView: View {
             .padding(.horizontal, 20)
             .padding(.top, 30)
             
-            // Divider
-            HStack {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.gray.opacity(0.3))
-                
-                Text("OR")
-                    .foregroundColor(.gray)
-                    .font(.system(size: 14))
-                    .padding(.horizontal, 16)
-                
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.gray.opacity(0.3))
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 30)
+            Text("OR")
+                .foregroundColor(.gray)
+                .font(.system(size: 14))
+                .padding(20)
             
-            // Google Sign In Button
-            Button(action: signInWithGoogle) {
-                HStack {
-                    Image(systemName: "globe")
-                        .font(.system(size: 16))
-                    
-                    Text("Login with Google")
-                        .fontWeight(.medium)
+            GeometryReader { geometry in
+                Button(action: signInWithGoogle) {
+                    HStack {
+                        Image("googleIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .padding(.horizontal, 20)
+                        
+                        Spacer()
+                        
+                        Text("Login with Google")
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .foregroundColor(.black)
+                    .padding()
+                    .frame(width: geometry.size.width * 0.8)
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 6, x: 2, y: 3)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
                 }
-                .foregroundColor(.black)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                )
-                .cornerRadius(12)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 20)
             }
-            .padding(.horizontal, 20)
+            .frame(height: 50)
             .padding(.top, 20)
             
             Spacer()
