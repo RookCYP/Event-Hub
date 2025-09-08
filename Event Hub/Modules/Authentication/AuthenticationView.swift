@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthenticationView: View {
-    @StateObject private var authManager = AuthenticationManager()
+    @EnvironmentObject var authManager: AuthenticationManager
     @State private var currentScreen: AuthScreen = .signIn
     
     var body: some View {
@@ -57,4 +57,5 @@ enum AuthScreen {
 
 #Preview {
     AuthenticationView()
+        .environmentObject(AuthenticationManager())
 }

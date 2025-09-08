@@ -22,8 +22,10 @@ struct Event_HubApp: App {
             if authManager.isAuthenticated {
                 ContentView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .environmentObject(authManager)
             } else {
                 AuthenticationView()
+                    .environmentObject(authManager)
             }
         }
     }
