@@ -105,74 +105,14 @@ struct SignInView: View {
             }
             .padding(.top, 20)
             
-            
-            GeometryReader { geometry in
-                Button(action: signIn) {
-                    ZStack {
-                        Text("SIGN IN")
-                            .fontWeight(.semibold)
-                            .padding()
-                        
-                        HStack{
-                            Spacer()
-                            
-                            Image(systemName: "arrow.right")
-                                .font(.system(size: 14, weight: .semibold))
-                                .padding(6)
-                                .background(
-                                    Circle()
-                                        .fill(Color.black.opacity(0.2))
-                                )
-                                .padding(.trailing, 13)
-                        }
-                    }
-                    .foregroundColor(.white)
-                    .frame(width: geometry.size.width * 0.8)
-                    .background(Color(red: 89/255, green: 105/255, blue: 246/255))
-                    .cornerRadius(12)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .frame(height: 50)
-            .padding(.vertical, 30)
+            CustomLongButton(title: "SIGN IN", action: signIn)
             
             Text("OR")
                 .foregroundColor(.gray)
                 .font(.system(size: 14))
                 .padding(20)
             
-            GeometryReader { geometry in
-                Button(action: signInWithGoogle) {
-                    HStack {
-                        Image("googleIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .padding(.horizontal, 20)
-                        
-                        Spacer()
-                        
-                        Text("Login with Google")
-                            .fontWeight(.medium)
-                        
-                        Spacer()
-                    }
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: geometry.size.width * 0.8)
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 6, x: 2, y: 3)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 20)
-            }
-            .frame(height: 50)
-            .padding(.top, 20)
+            LoginGoogleButton(action: signInWithGoogle)
             
             Spacer()
             
