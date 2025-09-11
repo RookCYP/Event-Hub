@@ -67,6 +67,8 @@ struct EventDate: Codable {
     let endTime: String?
     let isRegular: Bool?
     let isEndless: Bool?
+    let isStartless: Bool?
+    let isContinuous: Bool?
     
     enum CodingKeys: String, CodingKey {
         case start, end
@@ -76,18 +78,73 @@ struct EventDate: Codable {
         case endTime = "end_time"
         case isRegular = "is_regular"
         case isEndless = "is_endless"
+        case isStartless = "is_startless"
+        case isContinuous = "is_continuous"
+    }
+    // Типы отображения дат
+     enum DateDisplayType {
+         case permanent    // "Постоянная экспозиция"
+         case regular      // "По расписанию"
+         case continuous   // "Ежедневно"
+         case specific     // Конкретные даты
+     }
+    
+    var dateDisplayType: DateDisplayType {
+        if isStartless == true || isEndless == true {
+            return .permanent
+        }
+        if isRegular == true {
+            return .regular
+        }
+        if isContinuous == true {
+            return .continuous
+        }
+        return .specific
     }
     
     // Computed property for SwiftUI
+    // Валидные даты (nil для "вечных" событий)
     var startDateTime: Date? {
-        guard let start = start else { return nil }
+        guard dateDisplayType == .specific || dateDisplayType == .continuous,
+              let start = start,
+              start > 0,
+              start < 253402300800
+        else { return nil }
+        
         return Date(timeIntervalSince1970: TimeInterval(start))
     }
     
     var endDateTime: Date? {
-        guard let end = end else { return nil }
+        guard dateDisplayType == .specific || dateDisplayType == .continuous,
+              let end = end,
+              end > 0,
+              end < 253402300800
+        else { return nil }
+        
         return Date(timeIntervalSince1970: TimeInterval(end))
     }
+    
+    // Текст для UI на основе типа
+    var displayText: String {
+        switch dateDisplayType {
+        case .permanent:
+            return "Постоянная экспозиция"
+        case .regular:
+            return "По расписанию"
+        case .continuous:
+            return "Ежедневно"
+        case .specific:
+            if let start = startDateTime {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .short
+                formatter.locale = Locale(identifier: "ru_RU")
+                return formatter.string(from: start)
+            }
+            return "Дата не указана"
+        }
+    }
+
 }
 
 struct Location: Codable, Identifiable {

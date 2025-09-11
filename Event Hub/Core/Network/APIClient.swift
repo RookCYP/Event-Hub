@@ -11,8 +11,6 @@ import Foundation
 
 // /Core/Network/APIClient.swift
 
-import Foundation
-
 actor APIClient {
     static let shared = APIClient()
     
@@ -63,6 +61,11 @@ actor APIClient {
         
         while true {
             do {
+                // Логируем запрос
+#if DEBUG
+                print("🔵 Request: \(currentRequest.httpMethod ?? "GET") \(currentRequest.url?.absoluteString ?? "")")
+#endif
+                
                 let (data, response) = try await session.data(for: currentRequest, delegate: nil)
                 try Task.checkCancellation()
                 
@@ -70,36 +73,48 @@ actor APIClient {
                     throw APIError.transport(URLError(.badServerResponse))
                 }
                 
+                // Логируем статус
+#if DEBUG
+                print("🟢 Response: HTTP \(http.statusCode) for \(currentRequest.url?.absoluteString ?? "")")
+#endif
+                
                 switch http.statusCode {
                 case 200...299:
                     guard !data.isEmpty else { throw APIError.emptyData }
+                    
+                    // ВСЕГДА логируем успешный ответ в DEBUG
+#if DEBUG
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        print("📦 Response body (\(data.count) bytes):")
+                        // Ограничиваем вывод для больших ответов
+                        if data.count > 2000 {
+                            print(jsonString.prefix(2000))
+                            print("... (truncated, total \(data.count) bytes)")
+                        } else {
+                            print(jsonString)
+                        }
+                    }
+#endif
+                    
                     do {
                         return try jsonDecoder.decode(T.self, from: data)
                     } catch let decodingError as DecodingError {
-                        #if DEBUG
-                        switch decodingError {
-                        case .typeMismatch(let type, let ctx):
-                            print("Type mismatch for \(type) at path: \(ctx.codingPath.map{ $0.stringValue }.joined(separator: "."))")
-                        case .valueNotFound(_, let ctx):
-                            print("Value not found at path: \(ctx.codingPath.map{ $0.stringValue }.joined(separator: ".")) – \(ctx.debugDescription)")
-                        case .keyNotFound(let key, let ctx):
-                            print("Key not found '\(key.stringValue)' at path: \(ctx.codingPath.map{ $0.stringValue }.joined(separator: ".")) – \(ctx.debugDescription)")
-                        case .dataCorrupted(let ctx):
-                            print("Data corrupted at path: \(ctx.codingPath.map{ $0.stringValue }.joined(separator: ".")) – \(ctx.debugDescription)")
-                        @unknown default:
-                            print("DecodingError: \(decodingError)")
-                        }
+#if DEBUG
+                        
+                        print("❌ Decoding failed for type: \(T.self)")
+                        logDecodingError(decodingError, data: data)
+                        
                         if let preview = String(data: data.prefix(2048), encoding: .utf8) {
                             print("Body preview:\n\(preview)")
                         }
-                        #endif
+#endif
                         throw APIError.decoding(decodingError)
                     } catch {
-                        #if DEBUG
+#if DEBUG
                         if let preview = String(data: data.prefix(2048), encoding: .utf8) {
                             print("Decoding failed for \(T.self). Body preview:\n\(preview)")
                         }
-                        #endif
+#endif
                         throw APIError.decoding(error)
                     }
                     
@@ -181,5 +196,37 @@ actor APIClient {
             return seconds
         }
         return nil
+    }
+    
+    // вспомогательный метод для красивого вывода ошибок декодирования:
+    private func logDecodingError(_ error: DecodingError, data: Data) {
+        switch error {
+        case .typeMismatch(let type, let context):
+            print("🔴 Type mismatch: expected \(type)")
+            print("   Path: \(context.codingPath.map { $0.stringValue }.joined(separator: " → "))")
+            print("   Description: \(context.debugDescription)")
+            
+        case .valueNotFound(let type, let context):
+            print("🔴 Value not found: \(type)")
+            print("   Path: \(context.codingPath.map { $0.stringValue }.joined(separator: " → "))")
+            
+        case .keyNotFound(let key, let context):
+            print("🔴 Key '\(key.stringValue)' not found")
+            print("   Path: \(context.codingPath.map { $0.stringValue }.joined(separator: " → "))")
+            
+        case .dataCorrupted(let context):
+            print("🔴 Data corrupted")
+            print("   Path: \(context.codingPath.map { $0.stringValue }.joined(separator: " → "))")
+            print("   Description: \(context.debugDescription)")
+            
+        @unknown default:
+            print("🔴 Unknown decoding error: \(error)")
+        }
+        
+        // Показываем фрагмент JSON вокруг проблемного места
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("📍 JSON fragment near error:")
+            print(jsonString.prefix(500))
+        }
     }
 }
