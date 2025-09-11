@@ -30,6 +30,21 @@ struct ContentViewTest: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.horizontal, 20)
+                
+                Button("Test Locations") {
+                    Task {
+                        do {
+                            let service = LocationService()
+                            let locations = try await service.fetchLocations()
+                            print("📍 Loaded \(locations.count) locations")
+                            for loc in locations.prefix(5) {
+                                print("  - \(loc.name) (\(loc.slug))")
+                            }
+                        } catch {
+                            print("❌ Location error: \(error)")
+                        }
+                    }
+                }
 
                 Spacer()
             }

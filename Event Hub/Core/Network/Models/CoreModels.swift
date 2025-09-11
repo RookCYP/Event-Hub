@@ -196,6 +196,7 @@ struct Place: Codable, Identifiable {
     let foreignUrl: String?
     let coords: Coordinates?
     let isClosed: Bool?
+    let isStub: Bool?
     let categories: [String]?
     let shortTitle: String?
     
@@ -204,6 +205,7 @@ struct Place: Codable, Identifiable {
         case siteUrl = "site_url"
         case foreignUrl = "foreign_url"
         case isClosed = "is_closed"
+        case isStub = "is_stub"
         case shortTitle = "short_title"
     }
 }
