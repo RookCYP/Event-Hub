@@ -56,7 +56,7 @@ struct CustomLongButton: View {
                     }
                 }
                 .foregroundColor(.white)
-                frame(width: style == .primary ? geometry.size.width * 0.8 : geometry.size.width * 0.5)
+                .frame(width: style == .primary ? geometry.size.width * 0.8 : geometry.size.width * 0.5)
                 .background(Color(red: 89/255, green: 105/255, blue: 246/255))
                 .cornerRadius(12)
             }
