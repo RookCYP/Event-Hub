@@ -198,7 +198,6 @@ actor APIClient {
         return nil
     }
     
-    // вспомогательный метод для красивого вывода ошибок декодирования:
     private func logDecodingError(_ error: DecodingError, data: Data) {
         switch error {
         case .typeMismatch(let type, let context):

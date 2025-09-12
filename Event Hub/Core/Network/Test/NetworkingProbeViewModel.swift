@@ -16,15 +16,22 @@ final class NetworkingProbeViewModel: ObservableObject {
     @Published var nextPageURL: URL?
 
     private let eventService: EventServiceProtocol
+    private var currentLocation: String = "spb"
+    private var currentCategory: String?
 
     init(eventService: EventServiceProtocol) {
         self.eventService = eventService
     }
 
-    func loadInitial(location: String = "spb") async {
+    func loadInitial(location: String = "spb", category: String? = nil) async {
         guard !isLoading else { return }
         isLoading = true
         errorText = nil
+        
+        // Сохраняем текущие параметры для loadNextPage
+        currentLocation = location
+        currentCategory = category
+        
         do {
             let now = Date()
             let until = Calendar.current.date(byAdding: .day, value: 7, to: now)!  // +7 дней
@@ -33,7 +40,7 @@ final class NetworkingProbeViewModel: ObservableObject {
                 location: location,
                 page: 1,                 // <- добавить
                 pageSize: 20,
-                categories: nil,         // <- добавить
+                categories: category.map { [$0] }, // Преобразуем строку в массив, если есть
                 actualSince: now,
                 actualUntil: until
             )
