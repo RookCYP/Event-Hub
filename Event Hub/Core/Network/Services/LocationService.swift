@@ -15,10 +15,14 @@ final class LocationService: LocationServiceProtocol {
     private let api = APIClient.shared
     
     func fetchLocations() async throws -> [Location] {
-        let response: LocationsResponse = try await api.request(endpoint: .locations, parameters: [
-            "fields": "slug,name,timezone,coords,language,currency",
-            "page_size": 100
-        ])
-        return response.results
+        // Напрямую декодируем массив, не wrapper
+        let locations: [Location] = try await api.request(
+            endpoint: .locations,
+            parameters: [
+                "fields": "slug,name,timezone,coords,language,currency",
+                "page_size": 100
+            ]
+        )
+        return locations
     }
 }

@@ -7,58 +7,145 @@
 
 // заглушка для теста сети
 import SwiftUI
-import Kingfisher
 
 struct NetworkingProbeView: View {
     @StateObject private var vm: NetworkingProbeViewModel
-
+    @State private var locations: [Location] = []
+    @State private var selectedLocation = "spb" // Дефолтный город
+    
+    @State private var categories: [Category] = []
+    @State private var selectedCategory: String? = nil
+    
     init(eventService: EventServiceProtocol = EventService()) {
         _vm = StateObject(wrappedValue: NetworkingProbeViewModel(eventService: eventService))
     }
-
+    
     var body: some View {
         List {
-            if let err = vm.errorText {
-                Section { Text(err).foregroundStyle(.red) }
-            }
-
-            ForEach(vm.events, id: \.id) { event in
-                HStack(spacing: 12) {
-                    KFImage(event.primaryImageURL)
-                        .placeholder { ProgressView() }
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 72, height: 72)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(event.title).font(.headline).lineLimit(2)
-                        if let place = event.place?.title, !place.isEmpty {
-                            Text(place).font(.subheadline).foregroundStyle(.secondary)
+            citySection
+            categoriesSection
+            errorSection
+            eventsSection
+        }
+        .overlay(loadingOverlay)
+        .navigationTitle("Networking Probe")
+        .task {
+            await loadInitialData()
+        }
+        .refreshable {
+            await vm.loadInitial(location: selectedLocation, category: selectedCategory)
+        }
+    }
+    
+    // MARK: - Sections
+    
+    @ViewBuilder
+    private var citySection: some View {
+        Section {
+            Menu {
+                ForEach(locations, id: \.slug) { location in
+                    Button(location.name) {
+                        selectedLocation = location.slug
+                        Task {
+                            await vm.loadInitial(
+                                location: location.slug,
+                                category: selectedCategory
+                            )
                         }
                     }
                 }
-            }
-
-            if vm.nextPageURL != nil {
-                Button {
-                    Task { await vm.loadNextPage() }
-                } label: {
-                    vm.isLoading ? AnyView(ProgressView().frame(maxWidth: .infinity)) :
-                                   AnyView(Text("Load more").frame(maxWidth: .infinity))
+            } label: {
+                HStack {
+                    Label("Город", systemImage: "location")
+                    Spacer()
+                    Text(currentCityName)
+                        .foregroundColor(.secondary)
                 }
             }
         }
-        .overlay {
-            if vm.events.isEmpty && vm.isLoading {
-                ProgressView("Loading…")
+    }
+    
+    
+    @ViewBuilder
+    private var categoriesSection: some View {
+        Section {
+            CategoryScrollView(
+                categories: categories,
+                selectedCategory: $selectedCategory,
+                onCategorySelected: { category in
+                    await vm.loadInitial(
+                        location: selectedLocation,
+                        category: category
+                    )
+                }
+            )
+            .listRowInsets(EdgeInsets())
+            .padding(.vertical, 8)
+        }
+    }
+    
+    @ViewBuilder
+    private var errorSection: some View {
+        if let err = vm.errorText {
+            Section {
+                Text(err).foregroundStyle(.red)
             }
         }
-        .navigationTitle("Networking Probe")
-        .task {
-            if vm.events.isEmpty { await vm.loadInitial(location: "spb") }
+    }
+    
+    @ViewBuilder
+    private var eventsSection: some View {
+        EventsListView(
+            events: vm.events,
+            nextPageURL: vm.nextPageURL,
+            isLoading: vm.isLoading,
+            onLoadMore: vm.loadNextPage
+        )
+    }
+    
+    @ViewBuilder
+    private var loadingOverlay: some View {
+        if vm.events.isEmpty && vm.isLoading {
+            ProgressView("Loading…")
         }
-        .refreshable {
-            await vm.loadInitial(location: "spb")
+    }
+    
+    
+    // MARK: - Computed Properties
+    
+    private var currentCityName: String {
+        locations.first { $0.slug == selectedLocation }?.name ?? "Санкт-Петербург"
+    }
+    
+    // MARK: - Methods
+    
+    private func loadInitialData() async {
+        await loadLocations()
+        await loadCategories()
+        
+        if vm.events.isEmpty {
+            await vm.loadInitial(location: selectedLocation)
+        }
+    }
+    
+    private func loadLocations() async {
+        do {
+            let service = LocationService()
+            let loaded = try await service.fetchLocations()
+            self.locations = loaded.filter {
+                $0.coords?.lat != nil && $0.coords?.lon != nil
+            }
+        } catch {
+            print("❌ Failed to load locations: \(error)")
+        }
+    }
+    
+    private func loadCategories() async {
+        do {
+            let service = CategoryService()
+            self.categories = try await service.fetchCategories()
+        } catch {
+            print("❌ Failed to load categories: \(error)")
         }
     }
 }

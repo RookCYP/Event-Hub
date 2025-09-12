@@ -32,6 +32,12 @@ protocol EventServiceProtocol {
 final class EventService: EventServiceProtocol {
     private let apiClient = APIClient.shared
 
+    // Константы для наборов полей
+    private enum FieldSet {
+        static let list = "id,dates,title,short_title,slug,place,location,categories,age_restriction,price,is_free,images"
+        static let detail = "id,publication_date,dates,title,short_title,slug,place,description,body_text,location,categories,tagline,age_restriction,price,is_free,images,favorites_count,comments_count,site_url,tags,participants"
+    }
+    
     func fetchEvents(
         location: String,
         page: Int = 1,
@@ -44,15 +50,15 @@ final class EventService: EventServiceProtocol {
             "location": location,
             "page": page,
             "page_size": pageSize,
-            "fields": "id,publication_date,dates,title,short_title,slug,place,description,body_text,location,categories,tagline,age_restriction,price,is_free,images,favorites_count,comments_count,site_url,tags,participants",
-            "expand": "place,location,dates,participants"
+            "fields": FieldSet.list,  // ← Сокращенный набор для списка
+            "expand": "place,location,dates"  // ← Без participants
         ]
         if let categories, !categories.isEmpty {
             parameters["categories"] = categories.joined(separator: ",")
         }
         if let actualSince { parameters["actual_since"] = Int(actualSince.timeIntervalSince1970) }
         if let actualUntil { parameters["actual_until"] = Int(actualUntil.timeIntervalSince1970) }
-
+        
         return try await apiClient.request(endpoint: .events, parameters: parameters)
     }
 
@@ -60,9 +66,10 @@ final class EventService: EventServiceProtocol {
         guard let url = URL(string: urlString) else { throw APIError.invalidURL }
         return try await apiClient.request(url: url)
     }
-
+    
     func fetchEventDetails(id: String) async throws -> Event {
         try await apiClient.request(endpoint: .eventDetails(id: id), parameters: [
+            "fields": FieldSet.detail,  // ← Полный набор для деталей
             "expand": "place,location,dates,participants"
         ])
     }
@@ -72,7 +79,8 @@ final class EventService: EventServiceProtocol {
             "q": query,
             "location": location,
             "page": page,
-            "page_size": pageSize
+            "page_size": pageSize,
+            "fields": FieldSet.list  // ← Тоже сокращенный для поиска
         ])
     }
 }
