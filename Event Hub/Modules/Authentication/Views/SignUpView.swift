@@ -111,61 +111,14 @@ struct SignUpView: View {
             }
             .padding(.horizontal, 20)
             
-            // Sign Up Button
-            Button(action: signUp) {
-                HStack {
-                    Text("SIGN UP")
-                        .fontWeight(.semibold)
-                    
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 14, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(12)
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 30)
+            CustomLongButton(title: "SIGN UP", action: signUp)
             
             Text("OR")
                 .foregroundColor(.gray)
                 .font(.system(size: 14))
                 .padding(20)
             
-            GeometryReader { geometry in
-                Button(action: signInWithGoogle) {
-                    HStack {
-                        Image("googleIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .padding(.horizontal, 20)
-                        
-                        Spacer()
-                        
-                        Text("Login with Google")
-                            .fontWeight(.medium)
-                        
-                        Spacer()
-                    }
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: geometry.size.width * 0.8)
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 6, x: 2, y: 3)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 20)
-            }
-            .frame(height: 50)
-            .padding(.top, 20)
+            LoginGoogleButton(action: signInWithGoogle)
             
             Spacer()
             
