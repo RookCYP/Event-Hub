@@ -21,34 +21,40 @@ struct EventRowView: View {
     }()
     
     var body: some View {
-        HStack(spacing: 12) {
-            KFImage(event.primaryImageURL)
-                .placeholder { ProgressView() }
-                .resizable()
-                .scaledToFill()
-                .frame(width: 72, height: 72)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(event.title)
-                    .font(.headline)
-                    .lineLimit(2)
+        NavigationLink(destination: EventDetailsView(eventId: String(event.id))) {
+            HStack(spacing: 12) {
+                KFImage(event.primaryImageURL)
+                    .placeholder { ProgressView() }
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 72, height: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 
-                if let firstDate = event.dates.first {
-                    Text(formatEventDate(firstDate))
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(event.title)
+                        .font(.headline)
+                        .lineLimit(2)
+                        .foregroundColor(.primary)
+                    
+                    if let firstDate = event.dates.first {
+                        Text(formatEventDate(firstDate))
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                    }
+                    
+                    if let place = event.place?.title, !place.isEmpty {
+                        Text(place)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
                 }
                 
-                if let place = event.place?.title, !place.isEmpty {
-                    Text(place)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
+                Spacer()
             }
+            .padding(.vertical, 4)
         }
-        .padding(.vertical, 4)
+        .buttonStyle(PlainButtonStyle())
     }
     
     private func formatEventDate(_ eventDate: EventDate) -> String {
