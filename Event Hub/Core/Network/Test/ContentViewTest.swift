@@ -50,6 +50,51 @@ struct ContentViewTest: View {
                 .buttonStyle(.bordered)
                 .padding(.horizontal, 20)
                 
+                // Endpoint "/places/" возвращает объект с пагинацией (как и "/events/").
+                //                Это может пригодиться для:
+                //                Карт - показать места проведения событий
+                //                Фильтрации - "События рядом с метро Адмиралтейская"
+                //                Навигации - построить маршрут до места
+                Button("Test Places") {
+                    Task {
+                        logText = "Loading places for SPb...\n"
+                        do {
+                            struct PlacesResponse: Codable {
+                                let count: Int
+                                let next: String?
+                                let previous: String?
+                                let results: [Place]
+                            }
+                            
+                            let response: PlacesResponse = try await APIClient.shared.request(
+                                endpoint: .places,
+                                parameters: [
+                                    "location": "spb",
+                                    "page_size": 10,
+                                    "fields": "id,title,slug,address,subway,coords,categories"
+                                ]
+                            )
+                            
+                            logText += "📍 Found \(response.count) places total\n"
+                            logText += "📍 Showing first \(response.results.count):\n"
+                            
+                            for place in response.results.prefix(5) {
+                                logText += "  - \(place.title)\n"
+                                if let address = place.address {
+                                    logText += "    📍 \(address)\n"
+                                }
+                                if let subway = place.subway, !subway.isEmpty {
+                                    logText += "    🚇 \(subway)\n"
+                                }
+                            }
+                        } catch {
+                            logText += "❌ Places error: \(error)\n"
+                        }
+                    }
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal, 20)
+                
                 // Текстовое поле для логов
                 ScrollView {
                     Text(logText.isEmpty ? "Logs will appear here..." : logText)
