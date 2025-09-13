@@ -59,22 +59,12 @@ struct ContentViewTest: View {
                     Task {
                         logText = "Loading places for SPb...\n"
                         do {
-                            struct PlacesResponse: Codable {
-                                let count: Int
-                                let next: String?
-                                let previous: String?
-                                let results: [Place]
-                            }
                             
-                            let response: PlacesResponse = try await APIClient.shared.request(
-                                endpoint: .places,
-                                parameters: [
-                                    "location": "spb",
-                                    "page_size": 10,
-                                    "fields": "id,title,slug,address,subway,coords,categories"
-                                ]
+                            let service = PlaceService()
+                            let response = try await service.fetchPlaces(
+                                location: "spb",
+                                pageSize: 10
                             )
-                            
                             logText += "📍 Found \(response.count) places total\n"
                             logText += "📍 Showing first \(response.results.count):\n"
                             

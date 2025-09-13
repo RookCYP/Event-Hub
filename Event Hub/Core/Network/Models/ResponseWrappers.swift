@@ -15,3 +15,10 @@ struct EventsResponse: Codable {
     let previous: String?
     let results: [Event]
 }
+
+struct PlacesResponse: Codable {
+    let count: Int
+    let next: String?
+    let previous: String?
+    let results: [Place]
+}
