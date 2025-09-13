@@ -24,46 +24,21 @@ struct OnboardingView: View {
         "3In publishing and graphic design, Lorem is a placeholder text commonly"
     ]
     
-    private let opacityGradient = LinearGradient(
-        gradient: Gradient(stops: [
-            .init(color: .white, location: 0.0),
-            .init(color: .white, location: 0.65),
-            .init(color: .clear, location: 1.0)
-        ]),
-        startPoint: .top,
-        endPoint: .bottom
-    )
+   
     
     var body: some View {
         ZStack {
             TabView(selection: $index) {
-                Image(.iPhoneX)
-                    .resizable()
-                    .scaledToFit()
-                
+                ScreenImage(image: .init(.iPhoneX))
                     .tag(0)
-                    .mask(
-                        opacityGradient
-                    )
                     .padding(.horizontal, 52)
                 
-                
-                Image(.iPhoneX2)
-                    .scaledToFit()
-                
+                ScreenImage(image: .init(.iPhoneX2))
                     .tag(1)
-                    .mask(
-                        opacityGradient
-                    )
                     .padding(.horizontal, 52)
                 
-                Image(.iPhoneX3)
-                    .scaledToFit()
-                
+                ScreenImage(image: .init(.iPhoneX3))
                     .tag(2)
-                    .mask(
-                        opacityGradient
-                    )
                     .padding(.horizontal, 52)
             }
             .tabViewStyle(.page)
@@ -72,7 +47,8 @@ struct OnboardingView: View {
             VStack {
                 Spacer()
                 ZStack {
-                    RoundedRectangle(cornerRadius: 48)
+                    
+                    RoundedCorner(radius: 48, corners: [.topLeft, .topRight])
                         .fill(.blue)
                         .frame(height: 288)
                     
@@ -94,8 +70,8 @@ struct OnboardingView: View {
                             .id(index + 100)
                             .transition(.opacity)
                         
-                        // Кнопки и точки
-                        HStack {
+                        // Buttons and dots
+                        HStack() {
                             Button("Skip") {
                                 hasSeenOnboarding = true
                             }
@@ -124,13 +100,14 @@ struct OnboardingView: View {
                                     hasSeenOnboarding = true
                                 }
                             }
+//                            .frame(width: 70, height: 8)
                             .foregroundStyle(.white)
                             .font(.headline)
                         }
+                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 40)
                         .padding(.top, 43)
                     }
-//                    .padding(.top, 24)
                 }
             }
             .ignoresSafeArea()
@@ -141,3 +118,20 @@ struct OnboardingView: View {
 #Preview {
     OnboardingView()
 }
+
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
+
