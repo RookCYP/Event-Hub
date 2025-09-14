@@ -46,23 +46,3 @@ enum Routes: Hashable {
     case profileScreen
     
 }
-
-enum SeeAllCategory: Hashable {
-    case trending
-    case recent
-    case popularCuisine
-    case byPopularCuisine
-    
-    var title: String {
-        switch self {
-        case .trending:
-            return "Trending now 🔥"
-        case .recent:
-            return "Recent recipe"
-        case .popularCuisine:
-            return "Popular cuisine"
-        case .byPopularCuisine:
-            return "Popular cuisine"
-        }
-    }
-}
