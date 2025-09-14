@@ -5,7 +5,6 @@
 //  Created by Aleksandr Meshchenko on 09.09.25.
 //
 
-
 enum StringOrInt: Codable, Equatable {
     case string(String)
     case int(Int)

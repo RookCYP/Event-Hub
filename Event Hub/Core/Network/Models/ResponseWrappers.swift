@@ -16,10 +16,9 @@ struct EventsResponse: Codable {
     let results: [Event]
 }
 
-struct LocationsResponse: Codable {
-    let results: [Location]
-}
-
-struct CategoriesResponse: Codable {
-    let results: [Category]
+struct PlacesResponse: Codable {
+    let count: Int
+    let next: String?
+    let previous: String?
+    let results: [Place]
 }
