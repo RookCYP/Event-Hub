@@ -63,21 +63,22 @@ struct ForgotPasswordView: View {
                 .padding(.horizontal, 20)
                 
                 // Send Button
-                Button(action: sendPasswordReset) {
-                    HStack {
-                        Text("SEND")
-                            .fontWeight(.semibold)
-                        
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 14, weight: .semibold))
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(12)
-                }
-                .padding(.horizontal, 20)
+                CustomLongButton(title: "SEND", action: sendPasswordReset)
+//                Button(action: sendPasswordReset) {
+//                    HStack {
+//                        Text("SEND")
+//                            .fontWeight(.semibold)
+//                        
+//                        Image(systemName: "arrow.right")
+//                            .font(.system(size: 14, weight: .semibold))
+//                    }
+//                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+//                    .padding()
+//                    .background(Color.blue)
+//                    .cornerRadius(12)
+//                }
+//                .padding(.horizontal, 20)
                 
                 // Success Message
                 if showSuccessMessage {
