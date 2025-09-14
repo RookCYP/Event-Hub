@@ -25,7 +25,7 @@ struct TabButton: View {
                 Text(tab.title)
                     .font(.system(size: 12))
             }
-            .foregroundColor(isSelected ? Color("indigoColor") : .gray)
+            .foregroundColor(isSelected ? Color("appPrimary") : .gray)
         }
     }
 }

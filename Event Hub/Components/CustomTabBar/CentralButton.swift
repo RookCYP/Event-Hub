@@ -17,7 +17,7 @@ struct CentralButton: View {
         } label: {
             ZStack {
                 Circle()
-                    .fill(Color("indigoColor"))
+                    .fill(Color("appPrimary"))
                     .frame(width: 44, height: 44)
                   
                 Image("favoritesIconForTabBar")
