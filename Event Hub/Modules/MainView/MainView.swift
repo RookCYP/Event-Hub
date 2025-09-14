@@ -14,22 +14,22 @@ struct MainView: View {
     
     var body: some View {
         
-        NavigationStack(path: $router.path) {
+        NavigationView {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
-                    HomeScreenView()
+                    ExploreView()
                         .tag(TabEnum.home)
                         .toolbar(.hidden, for: .tabBar)
                         
-                    DiscoverView()
+                    EventsView()
                         .tag(TabEnum.bookmarks)
                         .toolbar(.hidden, for: .tabBar)
                         
-                    AddRecipeView()
+                    FavoritesView()
                         .tag(TabEnum.add)
                         .toolbar(.hidden, for: .tabBar)
                         
-                    BellView()
+                    MapView()
                         .tag(TabEnum.notifications)
                         .toolbar(.hidden, for: .tabBar)
                         
@@ -51,28 +51,80 @@ struct MainView: View {
             
             .navigationBarHidden(true)
             .ignoresSafeArea(.keyboard)
-            .navigationDestination(for: Routes.self) { route in
-                switch route {
-                case .homeScreen:
-                    HomeScreenView()
-                case .detailScreen(let recipe):
-                    DetailView(detailVM: DetailViewModel(recipe: recipe, router: router))
-                case .seeAllScreen(let category):
-                    SeeAllView(category: category)
-                case .searchScreen:
-                    SearchScreenView()
-                case .createScreen:
-                    AddRecipeView()
-                case .profileScreen:
-                    ProfileView()
-                }
-                
-            }
-            
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .tint(.black)
-        
         .environmentObject(router)
+        .sheet(isPresented: $router.isPresented) {
+            if let route = router.currentRoute {
+                destinationView(for: route)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func destinationView(for route: Routes) -> some View {
+        NavigationView {
+            switch route {
+            case .exploreScreen:
+                ExploreView()
+            case .eventsScreen:
+                // Здесь нужно будет добавить DetailView когда он будет создан
+                Text("Detail Screen")
+                    .navigationTitle("Detail")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Назад") {
+                                router.goBack()
+                            }
+                        }
+                    }
+            case .favoritesScreen:
+                // Здесь нужно будет добавить SeeAllView когда он будет создан
+                Text("See All Screen")
+                    .navigationTitle("See All")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Назад") {
+                                router.goBack()
+                            }
+                        }
+                    }
+            case .searchScreen:
+                // Здесь нужно будет добавить SearchScreenView когда он будет создан
+                Text("Search Screen")
+                    .navigationTitle("Поиск")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Назад") {
+                                router.goBack()
+                            }
+                        }
+                    }
+//            case .createScreen:
+//                AddRecipeView()
+//                    .toolbar {
+//                        ToolbarItem(placement: .navigationBarLeading) {
+//                            Button("Назад") {
+//                                router.goBack()
+//                            }
+//                        }
+//                    }
+            case .profileScreen:
+                ProfileView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Назад") {
+                                router.goBack()
+                            }
+                        }
+                    }
+            }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
