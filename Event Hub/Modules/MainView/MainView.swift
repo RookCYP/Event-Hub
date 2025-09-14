@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct MainView: View {
-    
+    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var authManager: AuthenticationManager
+
     @StateObject private var router = Router()
-    @State private var selectedTab: TabEnum = .home
+    @State private var selectedTab: TabEnum = .explore
     
     var body: some View {
         
@@ -18,27 +20,23 @@ struct MainView: View {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
                     ExploreView()
-                        .tag(TabEnum.home)
-                        .toolbar(.hidden, for: .tabBar)
+                        .tag(TabEnum.explore)
                         
                     EventsView()
-                        .tag(TabEnum.bookmarks)
-                        .toolbar(.hidden, for: .tabBar)
+                        .tag(TabEnum.events)
                         
                     FavoritesView()
-                        .tag(TabEnum.add)
-                        .toolbar(.hidden, for: .tabBar)
+                        .tag(TabEnum.favorites)
                         
                     MapView()
-                        .tag(TabEnum.notifications)
-                        .toolbar(.hidden, for: .tabBar)
+                        .tag(TabEnum.map)
                         
                     ProfileView()
                         .tag(TabEnum.profile)
-                        .toolbar(.hidden, for: .tabBar)
                 }
                 .padding(.top, selectedTab.title.isEmpty ? 0 : 50)
-                
+                .environment(\.managedObjectContext, viewContext)
+
                 if !selectedTab.title.isEmpty {
                     VStack {
                         CustomNavBar(title: selectedTab.title)
@@ -55,7 +53,7 @@ struct MainView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .tint(.black)
         .environmentObject(router)
-        .sheet(isPresented: $router.isPresented) {
+        .fullScreenCover(isPresented: $router.isPresented) {
             if let route = router.currentRoute {
                 destinationView(for: route)
             }
@@ -69,59 +67,23 @@ struct MainView: View {
             case .exploreScreen:
                 ExploreView()
             case .eventsScreen:
-                // Здесь нужно будет добавить DetailView когда он будет создан
-                Text("Detail Screen")
-                    .navigationTitle("Detail")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button("Назад") {
-                                router.goBack()
-                            }
-                        }
-                    }
+                EventsView()
             case .favoritesScreen:
-                // Здесь нужно будет добавить SeeAllView когда он будет создан
-                Text("See All Screen")
-                    .navigationTitle("See All")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button("Назад") {
-                                router.goBack()
-                            }
-                        }
-                    }
-            case .searchScreen:
-                // Здесь нужно будет добавить SearchScreenView когда он будет создан
-                Text("Search Screen")
-                    .navigationTitle("Поиск")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button("Назад") {
-                                router.goBack()
-                            }
-                        }
-                    }
-//            case .createScreen:
-//                AddRecipeView()
-//                    .toolbar {
-//                        ToolbarItem(placement: .navigationBarLeading) {
-//                            Button("Назад") {
-//                                router.goBack()
-//                            }
-//                        }
-//                    }
+                EventsView()
+            case .mapScreen:
+                MapView()
             case .profileScreen:
                 ProfileView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button("Назад") {
-                                router.goBack()
-                            }
-                        }
-                    }
+            case .detailScreen:
+                DetailView()
+            case .notificationScreen:
+                NotificationView()
+            case .searchScreen:
+                SearchView()
+            case .listsScreen:
+                ListsView()
+            case .seeAllScreen:
+                SeeAllView()
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -130,4 +92,6 @@ struct MainView: View {
 
 #Preview {
     MainView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(AuthenticationManager())
 }

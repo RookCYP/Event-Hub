@@ -8,41 +8,41 @@
 import Foundation
 import SwiftUI
 
-
 class Router: ObservableObject {
     
-    @Published var path = NavigationPath()
+    @Published var currentRoute: Routes? = nil
+    @Published var isPresented = false
     
     func goTo(to route: Routes) {
-        path.append(route)
+        currentRoute = route
+        isPresented = true
     }
     
     func goBack() {
-    
-        if path.isEmpty { return }
-        path.removeLast()
-        
+        isPresented = false
+        currentRoute = nil
     }
     
     func goToRoot() {
-        path.removeLast(path.count)
+        isPresented = false
+        currentRoute = nil
     }
     
     func popToView(count: Int) {
-        path.removeLast(count)
+        // Для iOS 15 это будет простое возвращение
+        goBack()
     }
-    
-    
-    
 }
 
 enum Routes: Hashable {
-
-    case homeScreen
-    case detailScreen
-    case seeAllScreen
-    case searchScreen
-    case createScreen
+    case exploreScreen
+    case eventsScreen
+    case favoritesScreen
+    case mapScreen
     case profileScreen
-    
+    case detailScreen
+    case notificationScreen
+    case searchScreen
+    case listsScreen
+    case seeAllScreen
 }
