@@ -34,7 +34,7 @@ struct OnboardingView: View {
                 ZStack {
                     
                     RoundedCorner(radius: 48, corners: [.topLeft, .topRight])
-                        .fill(.blue)
+                        .fill(Color(red: 89/255, green: 105/255, blue: 246/255))
                         .frame(height: 288)
                     
                     VStack(spacing: 16) {
@@ -48,8 +48,7 @@ struct OnboardingView: View {
                         Text(vm.subtitles[vm.index])
                             .font(.subheadline)
                             .multilineTextAlignment(.center)
-                            .foregroundStyle(.white)
-                            
+                            .foregroundStyle(.white)            
                         
                         // Buttons and dots
                         HStack() {
@@ -90,20 +89,6 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView()
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
 }
 
 
