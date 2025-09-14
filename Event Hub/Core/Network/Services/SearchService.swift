@@ -6,10 +6,14 @@
 //
 
 // /Core/Network/Services/SearchService.swift
+
+import Foundation
+
 protocol SearchServiceProtocol {
     func searchEvents(query: String, location: String) async throws -> SearchResponse
     func searchPlaces(query: String, location: String) async throws -> SearchResponse
     func searchAll(query: String, location: String) async throws -> SearchResponse
+    func fetchNextPage(from urlString: String) async throws -> SearchResponse
 }
 
 final class SearchService: SearchServiceProtocol {
@@ -53,5 +57,13 @@ final class SearchService: SearchServiceProtocol {
                 "expand": "place,dates"
             ]
         )
+    }
+    
+    // Загрузка следующей страницы результатов
+    func fetchNextPage(from urlString: String) async throws -> SearchResponse {
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        return try await api.request(url: url)
     }
 }

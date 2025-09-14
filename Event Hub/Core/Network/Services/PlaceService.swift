@@ -5,8 +5,8 @@
 //  Created by Aleksandr Meshchenko on 13.09.25.
 //
 
-
 // /Modules/Shared/Services/PlaceService.swift
+
 import Foundation
 
 protocol PlaceServiceProtocol {
@@ -21,6 +21,8 @@ protocol PlaceServiceProtocol {
         coords: Coordinates?,
         radius: Int?
     ) async throws -> PlacesResponse
+    
+    func fetchNextPage(from urlString: String) async throws -> PlacesResponse
 }
 
 final class PlaceService: PlaceServiceProtocol {
@@ -68,5 +70,12 @@ final class PlaceService: PlaceServiceProtocol {
             endpoint: .places,
             parameters: params
         )
+    }
+    
+    func fetchNextPage(from urlString: String) async throws -> PlacesResponse {
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        return try await api.request(url: url)
     }
 }
