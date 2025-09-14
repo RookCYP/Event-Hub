@@ -20,7 +20,7 @@ struct Event_HubApp: App {
     var body: some Scene {
         WindowGroup {
             if authManager.isAuthenticated {
-                ContentView()
+                MainView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .environmentObject(authManager)
             } else {
