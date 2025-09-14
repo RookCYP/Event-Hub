@@ -9,26 +9,11 @@ import SwiftUI
 
 struct OnboardingView: View {
     
-    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
-    @State private var index = 0
-    
-    let titles = [
-        "Explore Upcoming and\nNearby Events",
-        "Web Have Modern Events\nCalendar Feature",
-        "To Look Up More Events or\nActivities Nearby By Map"
-    ]
-    
-    let subtitles = [
-        "In publishing and graphic design, Lorem is a placeholder text commonly",
-        "2In publishing and graphic design, Lorem is a placeholder text commonly",
-        "3In publishing and graphic design, Lorem is a placeholder text commonly"
-    ]
-    
-   
+    @StateObject private var vm = OnboardingViewModel()
     
     var body: some View {
         ZStack {
-            TabView(selection: $index) {
+            TabView(selection: $vm.index) {
                 ScreenImage(image: .init(.iPhoneX))
                     .tag(0)
                     .padding(.horizontal, 52)
@@ -54,26 +39,22 @@ struct OnboardingView: View {
                     
                     VStack(spacing: 16) {
                         // Title
-                        Text(titles[index])
+                        Text(vm.titles[vm.index])
                             .font(.title2.bold())
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.white)
-                            .id(index)
-                            .transition(.opacity)
                         
                         // Subtitle
-                        Text(subtitles[index])
+                        Text(vm.subtitles[vm.index])
                             .font(.subheadline)
                             .multilineTextAlignment(.center)
-                            .foregroundStyle(.white.opacity(0.85))
-                            .padding(.horizontal, 24)
-                            .id(index + 100)
-                            .transition(.opacity)
+                            .foregroundStyle(.white)
+                            
                         
                         // Buttons and dots
                         HStack() {
                             Button("Skip") {
-                                hasSeenOnboarding = true
+                                vm.skip()
                             }
                             .foregroundStyle(.white.opacity(0.7))
                             .font(.headline)
@@ -81,33 +62,25 @@ struct OnboardingView: View {
                             Spacer()
                             
                             HStack(spacing: 10) {
-                                ForEach(0..<3) { i in
+                                ForEach(0..<3) { index in
                                     Circle()
-                                        .fill(i == index ? .white : .white.opacity(0.4))
+                                        .fill(index == vm.index ? .white : .white.opacity(0.4))
                                         .frame(width: 8, height: 8)
                                 }
                             }
                             
                             Spacer()
                             
-                            Button(index == 2 ? "Start" : "Next") {
-                                if index < 2 {
-                                    withAnimation(.easeInOut) {
-                                        index += 1
-                                    }
-                                    
-                                } else {
-                                    hasSeenOnboarding = true
-                                }
+                            Button(vm.isLastPage ? "Start" : "Next") {
+                                vm.next()
                             }
-//                            .frame(width: 70, height: 8)
                             .foregroundStyle(.white)
                             .font(.headline)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 40)
                         .padding(.top, 43)
                     }
+                    .padding(.horizontal, 40)
                 }
             }
             .ignoresSafeArea()
@@ -118,7 +91,6 @@ struct OnboardingView: View {
 #Preview {
     OnboardingView()
 }
-
 
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
