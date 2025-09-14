@@ -92,21 +92,22 @@ struct ResetPasswordView: View {
                 .padding(.horizontal, 20)
                 
                 // Change Password Button
-                Button(action: changePassword) {
-                    HStack {
-                        Text("CHANGE PASSWORD")
-                            .fontWeight(.semibold)
-                        
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 14, weight: .semibold))
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(12)
-                }
-                .padding(.horizontal, 20)
+                CustomLongButton(title: "CHANGE PASSWORD", action: changePassword)
+//                Button(action: changePassword) {
+//                    HStack {
+//                        Text("CHANGE PASSWORD")
+//                            .fontWeight(.semibold)
+//                        
+//                        Image(systemName: "arrow.right")
+//                            .font(.system(size: 14, weight: .semibold))
+//                    }
+//                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+//                    .padding()
+//                    .background(Color.blue)
+//                    .cornerRadius(12)
+//                }
+//                .padding(.horizontal, 20)
                 
                 // Success Message
                 if showSuccessMessage {
