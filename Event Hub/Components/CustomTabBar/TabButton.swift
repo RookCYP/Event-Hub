@@ -15,18 +15,25 @@ struct TabButton: View {
     
     var body: some View {
         Button(action: action) {
-            Image(tab.icon)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 40, height: 40)
-                .background {
-                    if isSelected {
-                        Color.red.opacity(0.2)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .frame(width: 22, height: 22)
-                    }
-                }
+            VStack {
+                Image(tab.icon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 25, height: 25)
+                
+                Text(tab.title)
+                    .font(.system(size: 12))
+            }
+            .foregroundColor(isSelected ? Color("indigoColor") : .gray)
         }
     }
 }
 
+#Preview {
+    TabButton(tab: .explore, isSelected: false, action: {})
+    TabButton(tab: .events, isSelected: true, action: {})
+    TabButton(tab: .favorites, isSelected: false, action: {})
+    TabButton(tab: .map, isSelected: false, action: {})
+    TabButton(tab: .profile, isSelected: false, action: {})
+}

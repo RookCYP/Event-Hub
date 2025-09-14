@@ -13,9 +13,9 @@ struct BottomTabBar: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(TabEnum.allCases, id: \.self) { tab in
-                if tab == .add {
+                if tab == .favorites {
                     CentralButton(selected: $selectedTab, index: tab)
-                        .offset(y: -20)
+                        .offset(y: -25)
                 } else {
                     TabButton(tab: tab, isSelected: selectedTab == tab) {
                         selectedTab = tab
@@ -27,7 +27,6 @@ struct BottomTabBar: View {
         .frame(height: 60)
         .background(
             Color(.systemBackground)
-                .clipShape(RectangleTopShape())
                 .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: -3)
                 .mask(Rectangle().padding(.top, -20))
                 .ignoresSafeArea(edges: .bottom)
@@ -38,7 +37,7 @@ struct BottomTabBar: View {
 // MARK: - Preview
 #Preview {
     struct BottomTabBarPreview: View {
-        @State private var tab: TabEnum = .home
+        @State private var tab: TabEnum = .explore
         var body: some View {
             BottomTabBar(selectedTab: $tab)
         }
