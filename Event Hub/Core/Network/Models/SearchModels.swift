@@ -17,13 +17,53 @@ struct SearchResponse: Codable {
 
 struct SearchResult: Codable {
     let id: Int
+    let slug: String?
     let title: String
     let description: String?
+    let bodyText: String?
     let ctype: String
     let objectId: Int?
+    let itemUrl: String?
+    
+    // Расширенные поля при expand
+    let place: Place?
+    let daterange: SearchDateRange?
+    let firstImage: FirstImage?
     
     enum CodingKeys: String, CodingKey {
-        case id, title, description, ctype
+        case id, slug, title, description, ctype, place, daterange
         case objectId = "object_id"
+        case bodyText = "body_text"
+        case itemUrl = "item_url"
+        case firstImage = "first_image"
+    }
+    
+    // Вложенная структура для дат из поиска
+    struct SearchDateRange: Codable {
+        let startDate: Int?
+        let startTime: Int?
+        let start: Int?
+        let endDate: Int?
+        let endTime: Int?
+        let end: Int?
+        let isContinuous: Bool?
+        let isEndless: Bool?
+        let isStartless: Bool?
+        
+        enum CodingKeys: String, CodingKey {
+            case start, end
+            case startDate = "start_date"
+            case startTime = "start_time"
+            case endDate = "end_date"
+            case endTime = "end_time"
+            case isContinuous = "is_continuous"
+            case isEndless = "is_endless"
+            case isStartless = "is_startless"
+        }
+    }
+    
+    struct FirstImage: Codable {
+        let image: String?
+        let thumbnails: [String: String]?
     }
 }

@@ -85,6 +85,53 @@ struct ContentViewTest: View {
                 .buttonStyle(.bordered)
                 .padding(.horizontal, 20)
                 
+                Button("Test Search") {
+                    Task {
+                        logText = "Тестируем поиск...\n"
+                        do {
+                            let service = SearchService()
+                            
+                            // Тест 1: Поиск событий
+                            logText += "\n🔍 Поиск событий 'концерт':\n"
+                            let eventResults = try await service.searchEvents(
+                                query: "концерт",
+                                location: "spb"
+                            )
+                            logText += "  Найдено событий: \(eventResults.count)\n"
+                            for result in eventResults.results.prefix(3) {
+                                logText += "  - \(result.title)\n"
+                            }
+                            
+                            // Тест 2: Поиск мест
+                            logText += "\n📍 Поиск мест 'музей':\n"
+                            let placeResults = try await service.searchPlaces(
+                                query: "музей",
+                                location: "spb"
+                            )
+                            logText += "  Найдено мест: \(placeResults.count)\n"
+                            for result in placeResults.results.prefix(3) {
+                                logText += "  - \(result.title)\n"
+                            }
+                            
+                            // Тест 3: Универсальный поиск
+                            logText += "\n🔎 Общий поиск 'выставка':\n"
+                            let allResults = try await service.searchAll(
+                                query: "выставка",
+                                location: "spb"
+                            )
+                            logText += "  Всего результатов: \(allResults.count)\n"
+                            let eventCount = allResults.results.filter { $0.ctype == "event" }.count
+                            let placeCount = allResults.results.filter { $0.ctype == "place" }.count
+                            logText += "  События: \(eventCount), Места: \(placeCount)\n"
+                            
+                        } catch {
+                            logText += "❌ Ошибка поиска: \(error)\n"
+                        }
+                    }
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal, 20)
+                
                 // Текстовое поле для логов
                 ScrollView {
                     Text(logText.isEmpty ? "Logs will appear here..." : logText)

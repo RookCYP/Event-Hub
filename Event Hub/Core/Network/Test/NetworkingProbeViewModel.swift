@@ -33,16 +33,12 @@ final class NetworkingProbeViewModel: ObservableObject {
         currentCategory = category
         
         do {
-            let now = Date()
-            let until = Calendar.current.date(byAdding: .day, value: 7, to: now)!  // +7 дней
-
             let response = try await eventService.fetchEvents(
                 location: location,
-                page: 1,                 // <- добавить
+                dateRange: .next7Days,
+                page: 1,
                 pageSize: 20,
-                categories: category.map { [$0] }, // Преобразуем строку в массив, если есть
-                actualSince: now,
-                actualUntil: until
+                categories: category.map { [$0] }
             )
             self.events = response.results
             self.nextPageURL = response.next.flatMap(URL.init(string:))

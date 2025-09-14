@@ -15,11 +15,10 @@ import SwiftUI
 protocol EventServiceProtocol {
     func fetchEvents(
         location: String,
+        dateRange: DateRange?,
         page: Int,
         pageSize: Int,
-        categories: [String]?,
-        actualSince: Date?,
-        actualUntil: Date?
+        categories: [String]?
     ) async throws -> EventsResponse
 
 //    func fetchEventDetails(id: String) async throws -> Event
@@ -40,13 +39,12 @@ final class EventService: EventServiceProtocol {
     
     func fetchEvents(
         location: String,
+        dateRange: DateRange?,
         page: Int = 1,
         pageSize: Int = 20,
-        categories: [String]? = nil,
-        actualSince: Date? = nil,
-        actualUntil: Date? = nil
+        categories: [String]? = nil
     ) async throws -> EventsResponse {
-        var parameters: [String: Any] = [
+        var params: [String: Any] = [
             "location": location,
             "page": page,
             "page_size": pageSize,
@@ -54,12 +52,14 @@ final class EventService: EventServiceProtocol {
             "expand": "place,location,dates"  // ← Без participants
         ]
         if let categories, !categories.isEmpty {
-            parameters["categories"] = categories.joined(separator: ",")
+            params["categories"] = categories.joined(separator: ",")
         }
-        if let actualSince { parameters["actual_since"] = Int(actualSince.timeIntervalSince1970) }
-        if let actualUntil { parameters["actual_until"] = Int(actualUntil.timeIntervalSince1970) }
+        if let dateRange = dateRange {
+            params["actual_since"] = Int(dateRange.from.timeIntervalSince1970)
+            params["actual_until"] = Int(dateRange.to.timeIntervalSince1970)
+        }
         
-        return try await apiClient.request(endpoint: .events, parameters: parameters)
+        return try await apiClient.request(endpoint: .events, parameters: params)
     }
 
     func fetchNextPage(from urlString: String) async throws -> EventsResponse {
