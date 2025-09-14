@@ -5,30 +5,53 @@
 //  Created by Aleksandr Meshchenko on 09.09.25.
 //
 
-
 // /Core/Network/Services/SearchService.swift
 protocol SearchServiceProtocol {
-    func search(query: String, location: String) async throws -> [SearchResult]
+    func searchEvents(query: String, location: String) async throws -> SearchResponse
+    func searchPlaces(query: String, location: String) async throws -> SearchResponse
+    func searchAll(query: String, location: String) async throws -> SearchResponse
 }
 
 final class SearchService: SearchServiceProtocol {
     private let api = APIClient.shared
     
-    func search(query: String, location: String) async throws -> [SearchResult] {
-        let response: SearchResponse = try await api.request(
-            endpoint: .events, // можно и /search/, но KudaGo позволяет фильтровать events
+    // Поиск только событий (для Explore)
+    func searchEvents(query: String, location: String) async throws -> SearchResponse {
+        return try await api.request(
+            endpoint: .search,
             parameters: [
-                "location": location,
                 "q": query,
+                "location": location,
+                "ctype": "event",
                 "page_size": 20,
-                "fields": "id,title,description,dates,place,images,location,categories,site_url",
-                "expand": "place,location,dates"
+                "expand": "place,dates"
             ]
         )
-        return response.results.map {
-            // Если останешься на /events/, можно собрать SearchResult самодельно; если /search/,
-            // то использовать твои модели как есть:
-            SearchResult(id: $0.id, title: $0.title, description: $0.description, ctype: "event", objectId: $0.id)
-        }
+    }
+    
+    // Поиск только мест (для Map)
+    func searchPlaces(query: String, location: String) async throws -> SearchResponse {
+        return try await api.request(
+            endpoint: .search,
+            parameters: [
+                "q": query,
+                "location": location,
+                "ctype": "place",
+                "page_size": 20
+            ]
+        )
+    }
+    
+    // Универсальный поиск
+    func searchAll(query: String, location: String) async throws -> SearchResponse {
+        return try await api.request(
+            endpoint: .search,
+            parameters: [
+                "q": query,
+                "location": location,
+                "page_size": 20,
+                "expand": "place,dates"
+            ]
+        )
     }
 }
