@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79A184CF2E6F9C89003A31B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 79A184CE2E6F9C89003A31B3 /* Kingfisher */; };
 		CEED31DD2E6EEA6C00221D3F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31DC2E6EEA6C00221D3F /* GoogleSignIn */; };
 		CEED31DF2E6EEA6C00221D3F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */; };
 		CEED31E22E6EEC8700221D3F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31E12E6EEC8700221D3F /* FirebaseAuth */; };
@@ -34,6 +35,7 @@
 				CEED31E22E6EEC8700221D3F /* FirebaseAuth in Frameworks */,
 				CEED31FD2E6EECAF00221D3F /* FirebaseAnalytics in Frameworks */,
 				CEED31DF2E6EEA6C00221D3F /* GoogleSignInSwift in Frameworks */,
+				79A184CF2E6F9C89003A31B3 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +90,7 @@
 				CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */,
 				CEED31E12E6EEC8700221D3F /* FirebaseAuth */,
 				CEED31FC2E6EECAF00221D3F /* FirebaseAnalytics */,
+				79A184CE2E6F9C89003A31B3 /* Kingfisher */,
 			);
 			productName = "Event Hub";
 			productReference = EDA9A2EC2E6DDCED00C6B195 /* Event Hub.app */;
@@ -120,6 +123,7 @@
 			packageReferences = (
 				CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EDA9A2ED2E6DDCED00C6B195 /* Products */;
@@ -280,7 +284,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				DEVELOPMENT_TEAM = 37KUSY2NJ4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Event-Hub-Info.plist";
@@ -314,7 +318,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				DEVELOPMENT_TEAM = 37KUSY2NJ4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Event-Hub-Info.plist";
@@ -365,6 +369,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
 		CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -384,6 +396,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		79A184CE2E6F9C89003A31B3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		CEED31DC2E6EEA6C00221D3F /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
