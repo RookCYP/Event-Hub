@@ -18,7 +18,7 @@ struct EventDetalisView: View {
             }
             
             ScrollView {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 16) {
                     Text("International Band Music Concert")
                         .font(.largeTitle)
                        
@@ -26,24 +26,32 @@ struct EventDetalisView: View {
                     HStack {
                         // TODOO change icon
                         RoundedRectangle(cornerRadius: 15)
+                            .fill(.appIndigo)
+                            .opacity(0.12)
                             .frame(width: 48, height: 48)
                         
                         VStack(alignment: .leading) {
                             Text("14 December 2021")
+                                .font(.headline)
                             
                             Text("Tuesday, 4:00 pm - 9:00 pm")
+                                .font(.subheadline)
                         }
                     }
                     // second
                     HStack {
                         // TODOO change icon
                         RoundedRectangle(cornerRadius: 15)
+                            .fill(.appIndigo)
+                            .opacity(0.12)
                             .frame(width: 48, height: 48)
                         
                         VStack(alignment: .leading) {
                             Text("Gala Convention Centre")
+                                .font(.headline)
                             
                             Text("36 Guild Street London, UK")
+                                .font(.subheadline)
                         }
                     }
                     // third
@@ -54,8 +62,10 @@ struct EventDetalisView: View {
                         
                         VStack(alignment: .leading) {
                             Text("Ashfak Sayem")
+                                .font(.headline)
                             
                             Text("Organizer")
+                                .font(.subheadline)
                         }
                     }
                     
@@ -66,11 +76,10 @@ struct EventDetalisView: View {
                     
                     
                 }
-                .padding(.top, 50)
+                .padding(.top, 30)
             }
             .padding(.horizontal, 21)
         }
-//        .frame(maxWidth: .infinity)
         .ignoresSafeArea()
     }
 }
