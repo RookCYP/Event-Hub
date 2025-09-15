@@ -10,14 +10,19 @@ import SwiftUI
 struct EventDetalisView: View {
     var body: some View {
         VStack {
-            ZStack {
+            ZStack(alignment: .bottomTrailing) {
                 Image(.concert)
                     .resizable()
                     .scaledToFill()
                     .frame(height: 244)
+                
+                Image(.shareIcon)
+                    .resizable()
+                    .frame(width: 36, height: 36)
+                    .padding(20)
             }
             
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("International Band Music Concert")
                         .font(.largeTitle)
@@ -25,9 +30,8 @@ struct EventDetalisView: View {
                     // first
                     HStack {
                         // TODOO change icon
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(.appIndigo)
-                            .opacity(0.12)
+                        Image(.dateIcon)
+                            .resizable()
                             .frame(width: 48, height: 48)
                         
                         VStack(alignment: .leading) {
@@ -41,9 +45,8 @@ struct EventDetalisView: View {
                     // second
                     HStack {
                         // TODOO change icon
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(.appIndigo)
-                            .opacity(0.12)
+                        Image(.locationblueIcon)
+                            .resizable()
                             .frame(width: 48, height: 48)
                         
                         VStack(alignment: .leading) {
@@ -57,9 +60,10 @@ struct EventDetalisView: View {
                     // third
                     HStack {
                         // TODOO change icon
-                        RoundedRectangle(cornerRadius: 15)
+                        Image(.imageIcon)
+                            .resizable()
                             .frame(width: 48, height: 48)
-                        
+                            
                         VStack(alignment: .leading) {
                             Text("Ashfak Sayem")
                                 .font(.headline)
@@ -73,10 +77,9 @@ struct EventDetalisView: View {
                         .font(.title)
                     
                     Text("Discover events you’ll love and make every day unforgettable. Plan your perfect schedule with just a few taps, explore exciting activities happening near you, and connect with the moments that matter most. Stay inspired, stay informed, and never miss what’s happening around you! Discover events you’ll love and make every day unforgettable. Plan your perfect schedule with just a few taps, explore exciting activities happening near you, and connect with the moments that matter most. Stay inspired, stay informed, and never miss what’s happening around you! Discover events you’ll love and make every day unforgettable. Plan your perfect schedule with just a few taps, explore exciting activities happening near you, and connect with the moments that matter most. Stay inspired, stay informed, and never miss what’s happening around you!")
-                    
-                    
                 }
                 .padding(.top, 30)
+                .padding(.bottom, 20)
             }
             .padding(.horizontal, 21)
         }
@@ -87,3 +90,4 @@ struct EventDetalisView: View {
 #Preview {
     EventDetalisView()
 }
+
