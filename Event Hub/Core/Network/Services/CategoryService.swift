@@ -6,6 +6,7 @@
 //
 
 // /Core/Network/Services/CategoryService.swift
+
 protocol CategoryServiceProtocol {
     func fetchCategories() async throws -> [Category]
 }
