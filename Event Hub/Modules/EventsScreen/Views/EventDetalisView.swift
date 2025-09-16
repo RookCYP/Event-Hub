@@ -6,21 +6,40 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct EventDetalisView: View {
-    var body: some View {
-        VStack {
-            ZStack(alignment: .bottomTrailing) {
-                Image(.concert)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 244)
-                
-                Image(.shareIcon)
-                    .resizable()
-                    .frame(width: 36, height: 36)
-                    .padding(20)
-            }
+    @State private var showShare = false
+
+      // Что шарим (URL + текст)
+      private var shareItems: [Any] {
+          [
+              URL(string: "https://youreventhub.app/event/123")!,
+              "International Band Music Concert — don’t miss it! "
+          ]
+      }
+
+      var body: some View {
+          VStack {
+              ZStack(alignment: .bottomTrailing) {
+                  Image(.concert)
+                      .resizable()
+                      .scaledToFill()
+                      .frame(height: 244)
+                      .clipped()
+
+                  // Кнопка share поверх картинки
+                  Button {
+                      showShare = true
+                  } label: {
+                      Image(.shareIcon)
+                          .resizable()
+                          .frame(width: 36, height: 36)
+                          
+                          
+                  }
+                  .padding(20)
+              }
             
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -81,6 +100,13 @@ struct EventDetalisView: View {
                 .padding(.top, 30)
                 .padding(.bottom, 20)
             }
+            .sheet(isPresented: $showShare) {
+                       ActivityView(
+                           items: shareItems,
+                           subject: "Share with friends",
+                           excluded: [.assignToContact, .print] // опционально: убрать лишнее
+                       )
+                   }
             .padding(.horizontal, 21)
         }
         .ignoresSafeArea()
@@ -91,3 +117,16 @@ struct EventDetalisView: View {
     EventDetalisView()
 }
 
+struct ActivityView: UIViewControllerRepresentable {
+    var items: [Any]
+    var subject: String? = nil
+    var excluded: [UIActivity.ActivityType] = []
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let subject { vc.setValue(subject, forKey: "subject") }     // тема для Mail
+        vc.excludedActivityTypes = excluded
+        return vc
+    }
+    func updateUIViewController(_ vc: UIActivityViewController, context: Context) {}
+}
