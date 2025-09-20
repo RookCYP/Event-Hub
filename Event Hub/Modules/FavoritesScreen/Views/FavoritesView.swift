@@ -12,10 +12,20 @@ struct FavoritesView: View {
     @StateObject private var viewModel = FavoritesViewModel()
     @State private var showingDeleteAlert = false
     @State private var eventToDelete: FavoriteEvent?
+    @State private var navigateToSearch = false
     
     var body: some View {
         NavigationView {
             VStack {
+                // Скрытый NavigationLink для программной навигации
+                NavigationLink(
+                    destination: FavoritesSearchView(),
+                    isActive: $navigateToSearch
+                ) {
+                    EmptyView()
+                }
+                .hidden()
+                
                 if viewModel.isLoading {
                     ProgressView("Loading favorites...")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -25,6 +35,7 @@ struct FavoritesView: View {
                     favoritesList
                 }
             }
+            .navigationBarHidden(true)
             .task {
                 await viewModel.loadFavorites()
             }
@@ -41,24 +52,21 @@ struct FavoritesView: View {
                 }
                 Button("Cancel", role: .cancel) {}
             }
+            .onReceive(NotificationCenter.default.publisher(for: .openFavoritesSearch)) { _ in
+                navigateToSearch = true
+            }
         }
     }
     
     private var emptyStateView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "bookmark")
-                .font(.system(size: 50))
-                .foregroundColor(.gray.opacity(0.5))
+        VStack(spacing: 60) {
             
             Text("NO FAVORITES")
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(.secondary)
             
-            Text("Add events to your favorites\nto see them here")
-                .font(.caption)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
+            Image("icons/Vector")
+                .foregroundColor(.red)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -81,6 +89,10 @@ struct FavoritesView: View {
         }
     }
     
+}
+
+extension Notification.Name {
+    static let openFavoritesSearch = Notification.Name("openFavoritesSearch")
 }
 
 #Preview {

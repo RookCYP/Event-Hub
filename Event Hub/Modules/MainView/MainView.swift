@@ -13,7 +13,6 @@ struct MainView: View {
     
     @StateObject private var router = Router()
     @State private var selectedTab: TabEnum = .explore
-    @State private var showingFavoritesSearch = false
     
     var body: some View {
         NavigationView {
@@ -43,7 +42,11 @@ struct MainView: View {
                             title: selectedTab.title,
                             showSearchButton: selectedTab == .favorites,
                             onSearchTap: {
-                                showingFavoritesSearch = true
+                                // Отправляем уведомление
+                                NotificationCenter.default.post(
+                                    name: .openFavoritesSearch,
+                                    object: nil
+                                )
                             }
                         )
                         Spacer()
@@ -52,12 +55,9 @@ struct MainView: View {
                 
                 CustomTabBar(selectedTab: $selectedTab)
             }
-            
             .navigationBarHidden(true)
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $showingFavoritesSearch) {
-                FavoritesSearchView()
-            }
+            // Убираем .sheet
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .tint(.black)
@@ -78,7 +78,7 @@ struct MainView: View {
             case .eventsScreen:
                 EventsView()
             case .favoritesScreen:
-                EventsView()
+                FavoritesView()
             case .mapScreen:
                 MapView()
             case .profileScreen:

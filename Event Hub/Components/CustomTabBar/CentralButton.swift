@@ -17,7 +17,7 @@ struct CentralButton: View {
         } label: {
             ZStack {
                 Circle()
-                    .fill(Color.Colors.primaryBlue)
+                    .fill(selected == .favorites ? .red : Color.Colors.primaryBlue)
                     .frame(width: 44, height: 44)
                   
                 Image("favoritesIconForTabBar")

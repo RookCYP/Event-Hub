@@ -173,10 +173,10 @@ struct ContentViewTest: View {
                             logText += "✅ Total favorites: \(favorites.count)\n"
                             
                             // Удаляем из избранного
-                            logText += "5. Removing from favorites...\n"
-                            try await service.removeFromFavorites(eventId: event.id)
-                            let stillFav = await service.isFavorite(eventId: event.id)
-                            logText += "✅ Removed, is favorite: \(stillFav)\n"
+//                            logText += "5. Removing from favorites...\n"
+//                            try await service.removeFromFavorites(eventId: event.id)
+//                            let stillFav = await service.isFavorite(eventId: event.id)
+//                            logText += "✅ Removed, is favorite: \(stillFav)\n"
                             
                         } catch {
                             logText += "❌ Error: \(error)\n"
