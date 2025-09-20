@@ -11,4 +11,7 @@ struct Events: Identifiable {
     let id = UUID()
     let title: String
     let date: Date
+    let location: String
+    let imageName: String
+    var isFavorite: Bool
 }

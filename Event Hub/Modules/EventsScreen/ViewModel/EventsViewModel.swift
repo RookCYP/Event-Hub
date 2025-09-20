@@ -26,9 +26,14 @@ final class EventsViewModel: ObservableObject {
         }
     }
     
-    //Test
     func addTestEvent() {
-        let event = Events(title: "Test Event", date: Date())
+        let event = Events(
+            title: "A Virtual Evening of Smooth Jazz",
+            date: Date(),
+            location: "Lot 13 • Oakland, CA",
+            imageName: "A Virtual Evening of Smooth Jazz",
+            isFavorite: true
+        )
         upcomingEvents.append(event)
     }
 }
