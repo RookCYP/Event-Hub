@@ -10,36 +10,42 @@ import SwiftUI
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var authManager: AuthenticationManager
-
+    
     @StateObject private var router = Router()
     @State private var selectedTab: TabEnum = .explore
+    @State private var showingFavoritesSearch = false
     
     var body: some View {
-        
         NavigationView {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
                     ExploreView()
                         .tag(TabEnum.explore)
-                        
+                    
                     EventsView()
                         .tag(TabEnum.events)
-                        
+                    
                     FavoritesView()
                         .tag(TabEnum.favorites)
-                        
+                    
                     MapView()
                         .tag(TabEnum.map)
-                        
+                    
                     ProfileView()
                         .tag(TabEnum.profile)
                 }
                 .padding(.top, selectedTab.title.isEmpty ? 0 : 50)
                 .environment(\.managedObjectContext, viewContext)
-
+                
                 if !selectedTab.title.isEmpty {
                     VStack {
-                        CustomNavBar(title: selectedTab.title)
+                        CustomNavBar(
+                            title: selectedTab.title,
+                            showSearchButton: selectedTab == .favorites,
+                            onSearchTap: {
+                                showingFavoritesSearch = true
+                            }
+                        )
                         Spacer()
                     }
                 }
@@ -49,6 +55,9 @@ struct MainView: View {
             
             .navigationBarHidden(true)
             .ignoresSafeArea(.keyboard)
+            .sheet(isPresented: $showingFavoritesSearch) {
+                FavoritesSearchView()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .tint(.black)

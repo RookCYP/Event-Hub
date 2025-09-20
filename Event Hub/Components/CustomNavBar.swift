@@ -9,19 +9,32 @@ import SwiftUI
 
 struct CustomNavBar: View {
     let title: String
+    var showSearchButton: Bool = false
+    var onSearchTap: (() -> Void)?
     
     var body: some View {
-        VStack {
+        HStack {
+            Spacer()
             Text(title)
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.horizontal)
-                .padding(.top, 10)
             
             Spacer()
+            
+            if showSearchButton {
+                Button(action: {
+                    onSearchTap?()
+                }) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 20))
+                        .foregroundColor(.primary)
+                }
+            }
         }
-        .frame(height: 50)
+        .padding(.horizontal)
+        .padding(.vertical, 12)
         .background(Color(.systemBackground))
     }
 }
