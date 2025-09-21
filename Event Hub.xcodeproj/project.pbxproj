@@ -12,9 +12,13 @@
 		CEED31DF2E6EEA6C00221D3F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */; };
 		CEED31E22E6EEC8700221D3F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31E12E6EEC8700221D3F /* FirebaseAuth */; };
 		CEED31FD2E6EECAF00221D3F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31FC2E6EECAF00221D3F /* FirebaseAnalytics */; };
+		ED4538992E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */; };
+		ED45389A2E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteEvent+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteEvent+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EDA9A2EC2E6DDCED00C6B195 /* Event Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Event Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,6 +56,8 @@
 		EDA9A2E32E6DDCED00C6B195 = {
 			isa = PBXGroup;
 			children = (
+				ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */,
+				ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */,
 				EDA9A2EE2E6DDCED00C6B195 /* Event Hub */,
 				CEED31E02E6EEC8700221D3F /* Frameworks */,
 				EDA9A2ED2E6DDCED00C6B195 /* Products */,
@@ -150,6 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED4538992E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift in Sources */,
+				ED45389A2E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
