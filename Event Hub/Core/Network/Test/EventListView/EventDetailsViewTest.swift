@@ -1,16 +1,15 @@
 //
-//  EventDetailsView.swift
+//  EventDetailsViewTest.swift
 //  Event Hub
 //
 //  Created by Aleksandr Meshchenko on 13.09.25.
 //
 
-
-// EventDetailsView.swift
+// EventDetailsViewTest.swift
 import SwiftUI
 import Kingfisher
 
-struct EventDetailsView: View {
+struct EventDetailsViewTest: View {
     let eventId: String
     @State private var event: Event?
     @State private var isLoading = true

@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct SearchView: View {
+    let category: String?
+    
+    init(category: String? = nil) {
+        self.category = category
+    }
+    
     var body: some View {
         Text("This is Search Screen")
     }

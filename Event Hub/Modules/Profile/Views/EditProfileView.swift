@@ -33,7 +33,7 @@ struct EditProfileView: View {
     }
     
     var body: some View {
-        NavigationView {
+        //NavigationView {
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(spacing: 20) {
@@ -181,34 +181,35 @@ struct EditProfileView: View {
                 }
                 .padding(.bottom, 80)
             }
-            //.navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        
+                        Image(.Icons.arrowLeft)
+                            .foregroundColor(Color.myBlue)
+                    }
+                }
+                
                 ToolbarItem(placement: .principal) {
                     Text("Profile")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.primary)
                 }
-            }
-            .navigationBarItems(
-                leading: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(Color("MyBlue"))
-                },
-                trailing: Button("Save") {
-                    saveChanges()
-                    presentationMode.wrappedValue.dismiss()
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveChanges()
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .disabled(!hasChanges)
+                    .foregroundColor(hasChanges ? Color("MyBlue") : .gray)
                 }
-                .disabled(!hasChanges)
-                .foregroundColor(hasChanges ? Color("MyBlue") : .gray)
-            )
-            .sheet(isPresented: $showImagePicker) {
-                ImagePicker(selectedImage: $tempImage)
             }
-        }
+        //}
     }
     
     private func saveChanges() {

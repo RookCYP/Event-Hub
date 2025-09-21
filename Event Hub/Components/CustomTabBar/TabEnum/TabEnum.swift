@@ -24,7 +24,7 @@ enum TabEnum: Int, CaseIterable {
     var title: String {
         switch self {
         case .explore:
-            return "Explore"
+            return ""  // Пустая строка - не показываем NavBar
         case .events:
             return "Events"
         case .favorites:
