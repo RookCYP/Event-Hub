@@ -55,6 +55,9 @@ struct FavoritesView: View {
             .onReceive(NotificationCenter.default.publisher(for: .openFavoritesSearch)) { _ in
                 navigateToSearch = true
             }
+            .onReceive(NotificationCenter.default.publisher(for: .favoritesChanged)) { _ in
+                Task { await viewModel.loadFavorites() }
+            }
         }
     }
     

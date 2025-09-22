@@ -22,6 +22,7 @@ final class EventDetailsViewModel: ObservableObject {
     var message: String { "\(event?.title ?? "Amazing Event") — don't miss it!" }
     
     private let eventService: EventServiceProtocol
+    private let favorites: FavoritesServiceProtocol
     
     // Вычисляемые свойства для UI
     var title: String {
@@ -71,9 +72,12 @@ final class EventDetailsViewModel: ObservableObject {
         return "No description available"
     }
     
-    init(eventId: String, eventService: EventServiceProtocol = EventService()) {
+    init(eventId: String,
+         eventService: EventServiceProtocol = EventService(),
+         favorites: FavoritesServiceProtocol = FavoritesService()) {
         self.eventId = eventId
         self.eventService = eventService
+        self.favorites = favorites
         
         Task {
             await loadEventDetails()
@@ -88,6 +92,7 @@ final class EventDetailsViewModel: ObservableObject {
         do {
             let eventDetails = try await eventService.fetchEventDetails(id: eventId)
             self.event = eventDetails
+            await loadFavoriteState()
         } catch {
             self.errorMessage = "Failed to load event details: \(error.localizedDescription)"
             print("!!! Failed to load event details: \(error)")
@@ -97,13 +102,34 @@ final class EventDetailsViewModel: ObservableObject {
     }
     
     func toggleFavorite() {
-        isFavorite.toggle()
-        saveFavoriteState()
+        Task {
+            guard let event = event else { return }
+            do {
+                if isFavorite {
+                    try await favorites.removeFromFavorites(eventId: event.id)
+                    isFavorite = false
+                } else {
+                    try await favorites.addToFavorites(event)
+                    isFavorite = true
+                }
+                // оповестим остальные экраны (например, FavoritesView), что список изменился
+                NotificationCenter.default.post(name: .favoritesChanged, object: nil)
+            } catch {
+                print("Favorites error: \(error)")
+            }
+        }
     }
     
     private func loadFavoriteState() async {
-        // TODO: Загрузить из Core Data
-        // Проверить, есть ли событие в избранном
+        // Берём id из event если есть, иначе пробуем распарсить из eventId:String
+        let numericId: Int? = event?.id ?? Int(eventId)
+        guard let id = numericId else {
+            // если id строковый и не приводится к Int, пропускаем Core Data проверку
+            self.isFavorite = false
+            return
+        }
+        let fav = await favorites.isFavorite(eventId: id)
+        self.isFavorite = fav
     }
     
     private func saveFavoriteState() {
@@ -181,4 +207,8 @@ final class EventDetailsViewModel: ObservableObject {
     private func stripHTML(_ html: String) -> String {
         html.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
     }
+}
+
+extension Notification.Name {
+    static let favoritesChanged = Notification.Name("favoritesChanged")
 }
