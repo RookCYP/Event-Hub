@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct SeeAllView: View {
+    let category: String
+    
     var body: some View {
         Text("This is SeeAll Screen")
     }
 }
-
-#Preview {
-    SeeAllView()
-}
+//
+//#Preview {
+//    SeeAllView()
+//}

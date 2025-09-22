@@ -13,9 +13,9 @@ struct MainView: View {
     
     @StateObject private var router = Router()
     @State private var selectedTab: TabEnum = .explore
-    
+
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $router.navigationPath) {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
                     ExploreView()
@@ -42,11 +42,7 @@ struct MainView: View {
                             title: selectedTab.title,
                             showSearchButton: selectedTab == .favorites,
                             onSearchTap: {
-                                // Отправляем уведомление
-                                NotificationCenter.default.post(
-                                    name: .openFavoritesSearch,
-                                    object: nil
-                                )
+                                router.navigate(to: .searchScreen(category: "favorites"))
                             }
                         )
                         Spacer()
@@ -57,46 +53,58 @@ struct MainView: View {
             }
             .navigationBarHidden(true)
             .ignoresSafeArea(.keyboard)
-            // Убираем .sheet
+            .navigationDestination(for: Routes.self) { route in
+                destinationView(for: route)
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .tint(.black)
         .environmentObject(router)
-        .fullScreenCover(isPresented: $router.isPresented) {
-            if let route = router.currentRoute {
-                destinationView(for: route)
-            }
-        }
+
     }
     
     @ViewBuilder
-    private func destinationView(for route: Routes) -> some View {
-        NavigationView {
+        private func destinationView(for route: Routes) -> some View {
             switch route {
-            case .exploreScreen:
-                ExploreView()
-            case .eventsScreen:
-                EventsView()
-            case .favoritesScreen:
-                FavoritesView()
-            case .mapScreen:
-                MapView()
-            case .profileScreen:
-                ProfileView()
-            case .detailScreen:
-                DetailView()
+            case .eventDetails(let eventId, let eventTitle):
+                EventDetailsView(eventId: eventId, eventTitle: eventTitle)
+                    .navigationBarHidden(true)
+                
+            case .editProfile(let viewModel):
+                EditProfileView(viewModel: viewModel)
+                    .navigationBarHidden(false)
+                
+            case .searchScreen(let category):
+                SearchView()
+                    .navigationBarHidden(false)
+                    .onAppear {
+                        // Можно передать category через @EnvironmentObject или другим способом
+                        print("Search category: \(category ?? "all")")
+                    }
+                
+            case .seeAllScreen(let category):
+                SeeAllView(category: category)
+                    .navigationBarHidden(false)
+                    .onAppear {
+                        print("See all category: \(category)")
+                    }
+                
             case .notificationScreen:
                 NotificationView()
-            case .searchScreen:
-                SearchView()
+                    .navigationBarHidden(false)
+                
             case .listsScreen:
                 ListsView()
-            case .seeAllScreen:
-                SeeAllView()
+                    .navigationBarHidden(false)
+                
+            case .favoritesSearchScreen:
+                FavoritesSearchView()
+                    .navigationBarHidden(false)
+                
+            case .exploreScreen, .eventsScreen, .favoritesScreen, .mapScreen, .profileScreen:
+                EmptyView()
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
-    }
 }
 
 #Preview {
