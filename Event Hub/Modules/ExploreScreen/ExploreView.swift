@@ -110,6 +110,7 @@ struct ExploreHeaderSection: View {
 // Локация и уведомления
 struct LocationNotificationBar: View {
     @EnvironmentObject var router: Router
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         HStack(alignment: .center) {
@@ -117,7 +118,8 @@ struct LocationNotificationBar: View {
                 Text("Current Location")
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.white)
-                Text("New York, USA")
+                
+                Text(locationManager.currentLocation)
                     .font(.system(size: 13, weight: .regular))
                     .foregroundColor(.white)
             }
@@ -136,6 +138,10 @@ struct LocationNotificationBar: View {
                         .font(.system(size: 20, weight: .semibold))
                 }
             }
+        }
+        .onAppear {
+            // Запрашиваем разрешение через публичный метод менеджера
+            locationManager.requestAuthorization()
         }
     }
 }
