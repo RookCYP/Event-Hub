@@ -1,75 +1,443 @@
 // !$*UTF8*$!
 {
-    archiveVersion = 1;
-    classes = {
-    };
-    objectVersion = 77;
-    objects = {
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
 
 /* Begin PBXBuildFile section */
-    // ... (остальные секции без изменений)
+		79A184CF2E6F9C89003A31B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 79A184CE2E6F9C89003A31B3 /* Kingfisher */; };
+		CEED31DD2E6EEA6C00221D3F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31DC2E6EEA6C00221D3F /* GoogleSignIn */; };
+		CEED31DF2E6EEA6C00221D3F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */; };
+		CEED31E22E6EEC8700221D3F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31E12E6EEC8700221D3F /* FirebaseAuth */; };
+		CEED31FD2E6EECAF00221D3F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEED31FC2E6EECAF00221D3F /* FirebaseAnalytics */; };
+		ED4538992E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */; };
+		ED45389A2E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteEvent+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteEvent+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EDA9A2EC2E6DDCED00C6B195 /* Event Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Event Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		EDA9A2EE2E6DDCED00C6B195 /* Event Hub */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Event Hub";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EDA9A2E92E6DDCED00C6B195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEED31DD2E6EEA6C00221D3F /* GoogleSignIn in Frameworks */,
+				CEED31E22E6EEC8700221D3F /* FirebaseAuth in Frameworks */,
+				CEED31FD2E6EECAF00221D3F /* FirebaseAnalytics in Frameworks */,
+				CEED31DF2E6EEA6C00221D3F /* GoogleSignInSwift in Frameworks */,
+				79A184CF2E6F9C89003A31B3 /* Kingfisher in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CEED31E02E6EEC8700221D3F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EDA9A2E32E6DDCED00C6B195 = {
+			isa = PBXGroup;
+			children = (
+				ED4538972E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift */,
+				ED4538982E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift */,
+				EDA9A2EE2E6DDCED00C6B195 /* Event Hub */,
+				CEED31E02E6EEC8700221D3F /* Frameworks */,
+				EDA9A2ED2E6DDCED00C6B195 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EDA9A2ED2E6DDCED00C6B195 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EDA9A2EC2E6DDCED00C6B195 /* Event Hub.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EDA9A2EB2E6DDCED00C6B195 /* Event Hub */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDA9A2FC2E6DDCEF00C6B195 /* Build configuration list for PBXNativeTarget "Event Hub" */;
+			buildPhases = (
+				EDA9A2E82E6DDCED00C6B195 /* Sources */,
+				EDA9A2E92E6DDCED00C6B195 /* Frameworks */,
+				EDA9A2EA2E6DDCED00C6B195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				EDA9A2EE2E6DDCED00C6B195 /* Event Hub */,
+			);
+			name = "Event Hub";
+			packageProductDependencies = (
+				CEED31DC2E6EEA6C00221D3F /* GoogleSignIn */,
+				CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */,
+				CEED31E12E6EEC8700221D3F /* FirebaseAuth */,
+				CEED31FC2E6EECAF00221D3F /* FirebaseAnalytics */,
+				79A184CE2E6F9C89003A31B3 /* Kingfisher */,
+			);
+			productName = "Event Hub";
+			productReference = EDA9A2EC2E6DDCED00C6B195 /* Event Hub.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EDA9A2E42E6DDCED00C6B195 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					EDA9A2EB2E6DDCED00C6B195 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = EDA9A2E72E6DDCED00C6B195 /* Build configuration list for PBXProject "Event Hub" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EDA9A2E32E6DDCED00C6B195;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EDA9A2ED2E6DDCED00C6B195 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EDA9A2EB2E6DDCED00C6B195 /* Event Hub */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EDA9A2EA2E6DDCED00C6B195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EDA9A2E82E6DDCED00C6B195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED4538992E8009DB002F7099 /* FavoriteEvent+CoreDataClass.swift in Sources */,
+				ED45389A2E8009DB002F7099 /* FavoriteEvent+CoreDataProperties.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-    EDA9A2FD2E6DDCEF00C6B195 /* Debug */ = {
-        isa = XCBuildConfiguration;
-        buildSettings = {
-            ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-            ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-            CODE_SIGN_IDENTITY = "Apple Development";
-            CODE_SIGN_STYLE = Automatic;
-            CURRENT_PROJECT_VERSION = 1;
-            DEVELOPMENT_TEAM = R4VL77V9Y9;  // Выбрано значение из основной конфигурации
-            ENABLE_PREVIEWS = YES;
-            GENERATE_INFOPLIST_FILE = YES;
-            INFOPLIST_FILE = "Event-Hub-Info.plist";
-            INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-            INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-            INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-            INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-            INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-            IPHONEOS_DEPLOYMENT_TARGET = 15.6;
-            LD_RUNPATH_SEARCH_PATHS = (
-                "$(inherited)",
-                "@executable_path/Frameworks",
-            );
-            MARKETING_VERSION = 1.0;
-            PRODUCT_BUNDLE_IDENTIFIER = "ordos.Event-Hub";
-            PRODUCT_NAME = "$(TARGET_NAME)";
-            PROVISIONING_PROFILE_SPECIFIER = "";
-            SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-            SUPPORTS_MACCATALYST = NO;
-            SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-            SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-            SWIFT_EMIT_LOC_STRINGS = YES;
-            SWIFT_VERSION = 5.0;
-            TARGETED_DEVICE_FAMILY = 1;
-        };
-        name = Debug;
-    };
-    EDA9A2FE2E6DDCEF00C6B195 /* Release */ = {
-        isa = XCBuildConfiguration;
-        buildSettings = {
-            ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-            ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-            CODE_SIGN_IDENTITY = "Apple Development";
-            CODE_SIGN_STYLE = Automatic;
-            CURRENT_PROJECT_VERSION = 1;
-            DEVELOPMENT_TEAM = R4VL77V9Y9;  // Выбрано значение из основной конфигурации
-            ENABLE_PREVIEWS = YES;
-            GENERATE_INFOPLIST_FILE = YES;
-            INFOPLIST_FILE = "Event-Hub-Info.plist";
-            INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-            INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-            INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-            INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-            INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-            IPHONEOS_DEPLOYMENT_TARGET = 15.6;
-            LD_RUNPATH_SEARCH_PATHS = (
-                "$(inherited)",
-                "@executable_path/Frameworks",
-            );
-            MARKETING_VERSION = 1.0;
-            PRODUCT_BUNDLE_IDENTIFIER = "ordos.Event-Hub";
-            PRODUCT_NAME = "$(TARGET_NAME)";
-            PROVISIONING_PROFILE_SPECIFIER = "";
-            SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+		EDA9A2FA2E6DDCEF00C6B195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EDA9A2FB2E6DDCEF00C6B195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EDA9A2FD2E6DDCEF00C6B195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Event-Hub-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "<key>NSLocationWhenInUseUsageDescription</key>\n<string>Нам нужно ваше местоположение для работы приложения</string>";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ordos.Event-Hub";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		EDA9A2FE2E6DDCEF00C6B195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R4VL77V9Y9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Event-Hub-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "<key>NSLocationWhenInUseUsageDescription</key>\n<string>Нам нужно ваше местоположение для работы приложения</string>";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ordos.Event-Hub";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EDA9A2E72E6DDCED00C6B195 /* Build configuration list for PBXProject "Event Hub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDA9A2FA2E6DDCEF00C6B195 /* Debug */,
+				EDA9A2FB2E6DDCEF00C6B195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDA9A2FC2E6DDCEF00C6B195 /* Build configuration list for PBXNativeTarget "Event Hub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDA9A2FD2E6DDCEF00C6B195 /* Debug */,
+				EDA9A2FE2E6DDCEF00C6B195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
+		CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.2.0;
+			};
+		};
+		CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		79A184CE2E6F9C89003A31B3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79A184CD2E6F9C89003A31B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		CEED31DC2E6EEA6C00221D3F /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		CEED31DE2E6EEA6C00221D3F /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEED31DB2E6EEA6C00221D3F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		CEED31E12E6EEC8700221D3F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CEED31FC2E6EECAF00221D3F /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEED31DA2E6EE40F00221D3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EDA9A2E42E6DDCED00C6B195 /* Project object */;
+}

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "profileIconForTabBar.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

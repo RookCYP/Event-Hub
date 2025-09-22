@@ -15,7 +15,11 @@ enum APIEndpoint {
     case categories
     case places
     case search
-
+    case movies
+    case movieDetails(id: String)
+    case lists
+    case listDetails(id: String)
+    
     var path: String {
         switch self {
         case .locations:       return "/locations/"
@@ -24,6 +28,10 @@ enum APIEndpoint {
         case .categories:      return "/event-categories/"
         case .places:          return "/places/"
         case .search:          return "/search/"  // KudaGo search endpoint чтобы дёргать /search/?q=
+        case .movies:           return "/movies/"
+        case .movieDetails(let id): return "/movies/\(id)/"
+        case .lists: return "/lists/"
+        case .listDetails(let id): return "/lists/\(id)/"
         }
     }
 }

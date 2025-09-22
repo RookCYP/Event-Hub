@@ -41,4 +41,10 @@ extension DateRange {
         let end = cal.dateInterval(of: .month, for: nextMonth)!.end
         return .init(from: start, to: end)
     }
+    
+    static var next30Days: DateRange {
+        let now = Date()
+        let to = Calendar.current.date(byAdding: .day, value: 30, to: now)!
+        return .init(from: now, to: to)
+    }
 }

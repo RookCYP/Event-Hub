@@ -132,6 +132,71 @@ struct ContentViewTest: View {
                 .buttonStyle(.bordered)
                 .padding(.horizontal, 20)
                 
+                Button("Test Favorites") {
+                    Task {
+                        logText = "Testing Favorites...\n"
+                        
+                        let service = FavoritesService()
+                        let eventService = EventService()
+                        
+                        do {
+                            // Загружаем событие для теста
+                            logText += "1. Loading event...\n"
+                            let events = try await eventService.fetchEvents(
+                                location: "spb",
+                                dateRange: .next7Days,
+                                page: 1,
+                                pageSize: 1,
+                                categories: nil
+                            )
+                            
+                            guard let event = events.results.first else {
+                                logText += "❌ No events found\n"
+                                return
+                            }
+                            
+                            logText += "✅ Event: \(event.title)\n"
+                            
+                            // Добавляем в избранное
+                            logText += "2. Adding to favorites...\n"
+                            try await service.addToFavorites(event)
+                            logText += "✅ Added\n"
+                            
+                            // Проверяем статус
+                            logText += "3. Checking status...\n"
+                            let isFav = await service.isFavorite(eventId: event.id)
+                            logText += "✅ Is favorite: \(isFav)\n"
+                            
+                            // Получаем все избранные
+                            logText += "4. Fetching all favorites...\n"
+                            let favorites = try await service.fetchAllFavorites()
+                            logText += "✅ Total favorites: \(favorites.count)\n"
+                            
+                            // Удаляем из избранного
+//                            logText += "5. Removing from favorites...\n"
+//                            try await service.removeFromFavorites(eventId: event.id)
+//                            let stillFav = await service.isFavorite(eventId: event.id)
+//                            logText += "✅ Removed, is favorite: \(stillFav)\n"
+                            
+                        } catch {
+                            logText += "❌ Error: \(error)\n"
+                        }
+                    }
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal, 20)
+                
+                Button("Show All Favorites") {
+                    Task {
+                        let service = FavoritesService()
+                        let favorites = try await service.fetchAllFavorites()
+                        logText = "📚 Favorites in DB: \(favorites.count)\n"
+                        for fav in favorites {
+                            logText += "- \(fav.title ?? "?")\n"
+                        }
+                    }
+                }
+                
                 // Текстовое поле для логов
                 ScrollView {
                     Text(logText.isEmpty ? "Logs will appear here..." : logText)

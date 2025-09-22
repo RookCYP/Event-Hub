@@ -21,7 +21,7 @@ struct EventRowView: View {
     }()
     
     var body: some View {
-        NavigationLink(destination: EventDetailsView(eventId: String(event.id))) {
+        NavigationLink(destination: EventDetailsViewTest(eventId: String(event.id))) {
             HStack(spacing: 12) {
                 KFImage(event.primaryImageURL)
                     .placeholder { ProgressView() }
