@@ -11,51 +11,112 @@ import Foundation
 final class EventDetailsViewModel: ObservableObject {
     @Published var showShareSheet = false
     @Published var isFavorite = false
+    @Published var isLoading = true
+    @Published var errorMessage: String?
+    
+    // Данные события из API
+    @Published var event: Event?
     
     let eventId: String
-    let link: String
-    let message: String
+    var link: String { "https://youreventhub.app/event/\(eventId)" }
+    var message: String { "\(event?.title ?? "Amazing Event") — don't miss it!" }
     
-    // Загружаем по eventId
-    @Published var title = "International Band Music Concert"
-    @Published var dateTitle = "14 December 2021"
-    @Published var dateSubtitle = "Tuesday, 4:00 pm - 9:00 pm"
-    @Published var placeTitle = "Gala Convention Centre"
-    @Published var placeSubtitle = "36 Guild Street London, UK"
-    @Published var organizerTitle = "Ashfak Sayem"
-    @Published var organizerSubtitle = "Organizer"
-    @Published var aboutText = """
-    Discover events you’ll love and make every day unforgettable. Plan your perfect schedule with just a few taps, explore exciting activities happening near you, and connect with the moments that matter most. Stay inspired, stay informed, and never miss what’s happening around you!
-    """
+    private let eventService: EventServiceProtocol
     
-    init(eventId: String, link: String, message: String) {
+    // Вычисляемые свойства для UI
+    var title: String {
+        event?.title ?? "Loading..."
+    }
+    
+    var dateTitle: String {
+        guard let firstDate = event?.dates.first else { return "Date TBA" }
+        return formatDateTitle(firstDate)
+    }
+    
+    var dateSubtitle: String {
+        guard let firstDate = event?.dates.first else { return "" }
+        return formatDateSubtitle(firstDate)
+    }
+    
+    var placeTitle: String {
+        event?.place?.title ?? "Location TBA"
+    }
+    
+    var placeSubtitle: String {
+        event?.place?.address ?? ""
+    }
+    
+    var organizerTitle: String {
+        // В API KudaGo нет организатора, можно использовать participants
+        if let participant = event?.participants?.first {
+            return participant.agent?.title ?? "Organizer"
+        }
+        return "Event Organizer"
+    }
+    
+    var organizerSubtitle: String {
+        if let participant = event?.participants?.first {
+            return participant.role?.name ?? "Organizer"
+        }
+        return "Organizer"
+    }
+    
+    var aboutText: String {
+        if let description = event?.description {
+            return stripHTML(description)
+        }
+        if let bodyText = event?.bodyText {
+            return stripHTML(bodyText)
+        }
+        return "No description available"
+    }
+    
+    init(eventId: String, eventService: EventServiceProtocol = EventService()) {
         self.eventId = eventId
-        self.link = link
-        self.message = message
+        self.eventService = eventService
         
-        // Здесь можно загрузить данные по eventId
         Task {
             await loadEventDetails()
             await loadFavoriteState()
         }
     }
     
-    private func loadEventDetails() async {
-        // Загрузка данных с сервера или из Core Data
-        // Пока используем моковые данные
+    func loadEventDetails() async {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            let eventDetails = try await eventService.fetchEventDetails(id: eventId)
+            self.event = eventDetails
+        } catch {
+            self.errorMessage = "Failed to load event details: \(error.localizedDescription)"
+            print("!!! Failed to load event details: \(error)")
+        }
+        
+        isLoading = false
     }
+    
     func toggleFavorite() {
         isFavorite.toggle()
         saveFavoriteState()
     }
     
     private func loadFavoriteState() async {
-        
-        
+        // TODO: Загрузить из Core Data
+        // Проверить, есть ли событие в избранном
     }
     
     private func saveFavoriteState() {
+        // TODO: Сохранить в Core Data
+        guard let event = event else { return }
         
+        if isFavorite {
+            // Добавить в избранное
+            print("Adding event \(event.id) to favorites")
+        } else {
+            // Удалить из избранного
+            print("Removing event \(event.id) from favorites")
+        }
     }
     
     var shareTargets: [ShareTarget] {
@@ -64,5 +125,60 @@ final class EventDetailsViewModel: ObservableObject {
             .whatsapp, .telegram, .facebook, .messenger,
             .twitter, .instagram, .iMessage
         ]
+    }
+    
+    // MARK: - Formatting Helpers
+    
+    private func formatDateTitle(_ eventDate: EventDate) -> String {
+        switch eventDate.dateDisplayType {
+        case .permanent:
+            return "Permanent Exhibition"
+        case .regular:
+            return "By Schedule"
+        case .continuous:
+            return "Daily"
+        case .specific:
+            if let date = eventDate.startDateTime {
+                let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "en_US")
+                formatter.dateFormat = "d MMMM yyyy"
+                return formatter.string(from: date)
+            }
+            return "Date TBA"
+        }
+    }
+    
+    private func formatDateSubtitle(_ eventDate: EventDate) -> String {
+        switch eventDate.dateDisplayType {
+        case .specific:
+            if let startDate = eventDate.startDateTime,
+               let endDate = eventDate.endDateTime {
+                let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "en_US")
+                formatter.dateFormat = "EEEE, h:mm a"
+                
+                let startTime = formatter.string(from: startDate)
+                formatter.dateFormat = "h:mm a"
+                let endTime = formatter.string(from: endDate)
+                
+                return "\(startTime) - \(endTime)"
+            } else if let date = eventDate.startDateTime {
+                let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "en_US")
+                formatter.dateFormat = "EEEE, h:mm a"
+                return formatter.string(from: date)
+            }
+        case .continuous:
+            return "Open daily"
+        case .regular:
+            return "Check schedule"
+        case .permanent:
+            return "Always available"
+        }
+        return ""
+    }
+    
+    private func stripHTML(_ html: String) -> String {
+        html.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
     }
 }
