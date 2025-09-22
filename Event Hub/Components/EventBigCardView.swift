@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct EventBigCardView: View {
+struct EventBigCardView<Content: View>: View {
     let eventId: String
-    let image: Image
+    @ViewBuilder let imageContent: () -> Content
     let date: String
     let title: String
     let location: String
@@ -26,8 +26,8 @@ struct EventBigCardView: View {
         }) {
             ZStack(alignment: .topTrailing) {
                 VStack(spacing: 18) {
-                    image
-                        .resizable()
+                    imageContent()
+                        .resizableIfPossible()
                         .scaledToFill()
                         .frame(width: 218, height: 131)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -71,22 +71,41 @@ struct EventBigCardView: View {
     }
 }
 
+// A small helper to call resizable() when the content is an Image or AsyncImage,
+// while leaving other views untouched.
+private extension View {
+    @ViewBuilder
+    func resizableIfPossible() -> some View {
+        if let image = self as? Image {
+            image.resizable()
+        } else if let asyncType = Self.self as? Any.Type, String(describing: asyncType).contains("AsyncImage") {
+            // AsyncImage already handles content sizing via its own closure; return as-is
+            self
+        } else {
+            self
+        }
+    }
+}
+
 struct EventBigCardViewPreview: View {
     var body: some View {
-            VStack {
-                EventBigCardView(
-                    eventId: "123",
-                    image: Image("International Band Mu"),
-                    date: "10 June",
-                    title: "A Virtual Evening of Smooth Jazz",
-                    location: "Lot 13 • Oakland, CA",
-                    isFavorite: true
-                )
-            }
-            .padding()
+        VStack {
+            EventBigCardView(
+                eventId: "123",
+                imageContent: {
+                    Image("International Band Mu")
+                },
+                date: "10 June",
+                title: "A Virtual Evening of Smooth Jazz",
+                location: "Lot 13 • Oakland, CA",
+                isFavorite: true
+            )
         }
+        .padding()
+    }
 }
 
 #Preview {
     EventBigCardViewPreview()
 }
+

@@ -46,8 +46,8 @@ final class EventService: EventServiceProtocol {
             "location": location,
             "page": page,
             "page_size": pageSize,
-            "fields": FieldSet.list,  // ← Сокращенный набор для списка
-            "expand": "place,location,dates"  // ← Без participants
+            "fields": FieldSet.list,
+            "expand": "place,location" // убрали dates
         ]
         if let categories, !categories.isEmpty {
             params["categories"] = categories.joined(separator: ",")
@@ -56,6 +56,10 @@ final class EventService: EventServiceProtocol {
             params["actual_since"] = Int(dateRange.from.timeIntervalSince1970)
             params["actual_until"] = Int(dateRange.to.timeIntervalSince1970)
         }
+        
+        #if DEBUG
+        print("fetchEvents params:", params)
+        #endif
         
         return try await apiClient.request(endpoint: .events, parameters: params)
     }
@@ -67,7 +71,7 @@ final class EventService: EventServiceProtocol {
     
     func fetchEventDetails(id: String) async throws -> Event {
         try await apiClient.request(endpoint: .eventDetails(id: id), parameters: [
-            "fields": FieldSet.detail,  // ← Полный набор для деталей
+            "fields": FieldSet.detail,
             "expand": "place,location,dates,participants"
         ])
     }
