@@ -30,7 +30,7 @@ struct MainView: View {
                     MapView()
                         .tag(TabEnum.map)
                     
-                    ProfileView()
+                    ProfileView(authManager: authManager)
                         .tag(TabEnum.profile)
                 }
                 .padding(.top, selectedTab.title.isEmpty ? 0 : 50)
@@ -64,8 +64,8 @@ struct MainView: View {
     }
     
     @ViewBuilder
-        private func destinationView(for route: Routes) -> some View {
-            switch route {
+        private func destinationView(for: Routes) -> some View {
+            switch `for` {
             case .eventDetails(let eventId, let eventTitle):
                 EventDetailsView(eventId: eventId, eventTitle: eventTitle)
                     .navigationBarHidden(true)
@@ -112,3 +112,4 @@ struct MainView: View {
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(AuthenticationManager())
 }
+

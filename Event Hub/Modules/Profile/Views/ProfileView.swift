@@ -8,18 +8,26 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject private var viewModel = ProfileViewModel(
-        profile: Profile(
-            name: "Taylor Swift",
-            description: """
+    @StateObject private var viewModel: ProfileViewModel
+    @State private var isDescriptionExpanded = false
+    
+    private static let initialProfile = Profile(
+        name: "Taylor Swift",
+        description: """
 About me , sfkasfnjasfsajfksafkasf, asd ,asldf s,d aslf,das,d as,das ,das,d as,d ,sa d,as dsdasdasdsadsadsad sadasd sd asd sad asd sad sad s das das d asd ad asd sad asd asd as das das d asd sad sd asd as das das a sd sd s da d ad asd as ds d sad asd asd sad a dsa d asd asd asd as d sd as da sd asd a das d da sd as das d asd asd as das d sa da dass d asd sa d as da
 """,
-            avatarData: nil
-        ),
-        authManager: AuthenticationManager()
+        avatarData: nil
     )
     
-    @State private var isDescriptionExpanded = false
+    // Важно: принимаем общий экземпляр AuthenticationManager
+    init(authManager: AuthenticationManager) {
+        _viewModel = StateObject(
+            wrappedValue: ProfileViewModel(
+                profile: ProfileView.initialProfile,
+                authManager: authManager
+            )
+        )
+    }
     
     var body: some View {
         VStack {
@@ -138,5 +146,6 @@ About me , sfkasfnjasfsajfksafkasf, asd ,asldf s,d aslf,das,d as,das ,das,d as,d
 }
 
 #Preview {
-    ProfileView()
+    // Для превью создаём свой экземпляр менеджера
+    ProfileView(authManager: AuthenticationManager())
 }
