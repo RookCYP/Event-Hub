@@ -10,7 +10,7 @@ import SwiftUI
 
 final class ProfileViewModel: ObservableObject {
     @Published var profile: Profile
-    @EnvironmentObject var authManager: AuthenticationManager
+    private let authManager: AuthenticationManager
     
     @Published var isShowingImagePicker = false
     @Published var isEditingProfile = false
@@ -25,6 +25,7 @@ final class ProfileViewModel: ObservableObject {
     
     init(profile: Profile, authManager: AuthenticationManager) {
         self.profile = profile
+        self.authManager = authManager
     }
     
     func editProfile() {

@@ -7,33 +7,81 @@
 
 import SwiftUI
 
+// MARK: - ViewModel для ExploreView
+final class ExploreViewModel: ObservableObject {
+    @Published var upcomingEvents: [Event] = []
+    @Published var nearbyEvents: [Event] = []
+    @Published var isLoading: Bool = false
+    @Published var error: String? = nil
+    
+    private let eventService: EventServiceProtocol
+    private var currentLocation: String = "msk" // Было "moscow" — для KudaGo нужен slug "msk"
+    
+    init(eventService: EventServiceProtocol = EventService()) {
+        self.eventService = eventService
+    }
+    
+    @MainActor
+    func loadEvents() async {
+        isLoading = true
+        error = nil
+        do {
+            // Для примера: загружаем две категории одинаково, но можно фильтровать иначе
+            let upcoming = try await eventService.fetchEvents(
+                location: currentLocation,
+                dateRange: nil,
+                page: 1,
+                pageSize: 10,
+                categories: nil
+            )
+            self.upcomingEvents = upcoming.results ?? []
+            
+            let nearby = try await eventService.fetchEvents(
+                location: currentLocation,
+                dateRange: nil,
+                page: 2,
+                pageSize: 10,
+                categories: nil
+            )
+            self.nearbyEvents = nearby.results ?? []
+        } catch {
+            self.error = error.localizedDescription
+        }
+        isLoading = false
+    }
+}
+
+// MARK: - Основное View
 struct ExploreView: View {
     @EnvironmentObject var router: Router
-    @State private var searchText = ""
-    
-    // TODO: заменить временные моковые данные на реальные
-    let upcomingEvents = [
-        (id: "1", date: "10 June", title: "A Virtual Evening of Smooth Jazz", location: "Lot 13 • Oakland, CA"),
-        (id: "2", date: "15 June", title: "International Band Music Concert", location: "Madison Square • NY"),
-        // ...  больше событий
-    ]
-    
-    let nearbyEvents = [
-        (id: "11", date: "12 June", title: "Local Art Exhibition", location: "Gallery 5 • Brooklyn, NY"),
-        (id: "12", date: "18 June", title: "Food Festival", location: "Central Park • NY"),
-        // ...  больше событий
-    ]
+    @StateObject private var viewModel = ExploreViewModel()
     
     var body: some View {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 0) {
-                    // Верхняя синяя секция
-                    ExploreHeaderSection()
-                    
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                // Верхняя синяя секция
+                ExploreHeaderSection()
+                
+                if viewModel.isLoading {
+                    ProgressView("Loading events...")
+                        .padding()
+                } else if let error = viewModel.error {
+                    VStack(spacing: 8) {
+                        Text("Ошибка загрузки событий:")
+                            .font(.headline)
+                        Text(error)
+                            .font(.subheadline)
+                        Button("Попробовать снова") {
+                            Task { await viewModel.loadEvents() }
+                        }
+                        .padding(.top, 8)
+                    }
+                    .padding()
+                } else {
                     // Upcoming Events секция
                     EventsSection(
                         title: "Upcoming Events",
-                        events: upcomingEvents,
+                        events: viewModel.upcomingEvents,
                         seeAllCategory: "upcoming"
                     )
                     .padding(.top, 16)
@@ -41,16 +89,22 @@ struct ExploreView: View {
                     // Nearby You секция
                     EventsSection(
                         title: "Nearby You",
-                        events: nearbyEvents,
+                        events: viewModel.nearbyEvents,
                         seeAllCategory: "nearby"
                     )
                     .padding(.top, 24)
                     .padding(.bottom, 100)
                 }
             }
-            .ignoresSafeArea(edges: .top)
         }
+        .ignoresSafeArea(edges: .top)
+        .task {
+            await viewModel.loadEvents()
+        }
+    }
 }
+
+// Категории, LocationNotificationBar, SearchFilterBar, CategoryButton, EventsSection — БЕЗ ИЗМЕНЕНИЙ кроме EventsSection
 
 struct CategoryButton: View {
     let icon: String
@@ -110,6 +164,7 @@ struct ExploreHeaderSection: View {
 // Локация и уведомления
 struct LocationNotificationBar: View {
     @EnvironmentObject var router: Router
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         HStack(alignment: .center) {
@@ -117,7 +172,8 @@ struct LocationNotificationBar: View {
                 Text("Current Location")
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.white)
-                Text("New York, USA")
+                
+                Text(locationManager.currentLocation)
                     .font(.system(size: 13, weight: .regular))
                     .foregroundColor(.white)
             }
@@ -136,6 +192,10 @@ struct LocationNotificationBar: View {
                         .font(.system(size: 20, weight: .semibold))
                 }
             }
+        }
+        .onAppear {
+            // Запрашиваем разрешение через публичный метод менеджера
+            locationManager.requestAuthorization()
         }
     }
 }
@@ -185,7 +245,7 @@ struct EventsSection: View {
     @EnvironmentObject var router: Router
     
     let title: String
-    let events: [(id: String, date: String, title: String, location: String)]
+    let events: [Event]
     let seeAllCategory: String
     
     var body: some View {
@@ -209,13 +269,28 @@ struct EventsSection: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(events, id: \.id) { event in
+                    ForEach(events) { event in
                         EventBigCardView(
-                            eventId: event.id,
-                            image: Image("International Band Mu"),
-                            date: event.date,
+                            eventId: String(event.id),
+                            imageContent: {
+                                if let url = event.primaryImageURL {
+                                    AsyncImage(url: url) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                    } placeholder: {
+                                        Color.gray.opacity(0.2)
+                                    }
+                                } else {
+                                    Image(systemName: "photo")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundColor(.gray)
+                                }
+                            },
+                            date: event.dates.first?.displayText ?? "",
                             title: event.title,
-                            location: event.location,
+                            location: event.place?.address ?? "—",
                             isFavorite: seeAllCategory == "upcoming"
                         )
                     }
